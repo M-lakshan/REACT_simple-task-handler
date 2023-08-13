@@ -50,7 +50,26 @@ const Task = (props) => {
       sec_st_obj["tdarr"]["func"](updating_arr);
     },50);
   }
+  const removeHandleClick = (elm) => {
+    console.log(elm.currentTarget.parentElement.querySelector(".checkbox").id)
+    let target_id = parseInt(elm.currentTarget.parentElement.querySelector(".checkbox").id.toString().substring(
+      elm.currentTarget.parentElement.querySelector(".checkbox").id.toString().indexOf("_")+1,
+      elm.currentTarget.parentElement.querySelector(".checkbox").id.toString().length
+    ));
 
+    let updated_arr = props.sec_state[1].filter(each_tsk => each_tsk.id!==target_id);
+    let updated_elm = props.sec_state[1].filter(each_tsk => each_tsk.id===target_id)[0];
+    updated_elm.removed = true;
+    
+    sec_st_obj["tuarr"]["func"](updated_arr);
+    
+    setTimeout(() => {
+      let updating_arr = sec_st_obj["trarr"]["arr"];
+      (!updating_arr.includes(updated_elm)) && updating_arr.push(updated_elm);
+      sec_st_obj["trarr"]["func"](updating_arr);
+    },50);
+  }
+ 
   return (
     <div className={`task_${id} task`}>
       <h5>{(completed || removed) ? <s>{name}</s> : name}</h5>
@@ -74,9 +93,13 @@ const Task = (props) => {
             <i className={(completed) ? "fa-regular fa-square" : "fa-regular fa-square active"}></i>
           </abbr>
         </label>}
-        {(removed!==true) && <input type="checkbox" id={`checkbox_${id}`} onChange={checkHandleChange}/>}
-        <button className="edit"><abbr title="&nbsp;edit&nbsp;"><i className="fa-solid fa-pen"></i></abbr></button>
-        {(removed!==true) && <button className="remove"><abbr title="&nbsp;remove&nbsp;"><i className="fa-solid fa-xmark"></i></abbr></button>}
+        {(removed!==true) && <input type="checkbox" id={`checkbox_${id}`} className="checkbox" onChange={checkHandleChange}/>}
+        <button className="edit">
+          <abbr title="&nbsp;edit&nbsp;"><i className="fa-solid fa-pen"></i></abbr>
+        </button>
+        {(removed!==true) && <button className="remove" onClick={removeHandleClick}>
+          <abbr title="&nbsp;remove&nbsp;"><i className="fa-solid fa-xmark"></i></abbr>
+        </button>}
       </div>
     </div>
   );
