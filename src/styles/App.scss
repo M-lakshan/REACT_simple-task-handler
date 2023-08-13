@@ -1,0 +1,306 @@
+$primary_color: #3A4454;
+$secondary_color: #53687E;
+$accent_color: #6B4E71;
+$background_color: #C2B2B4;
+$selection_color: #F5DDDD;
+$check: #3ead0f;
+$edit: #ff7d0b;
+$remove: #e6443f;
+$white: #FFF;
+
+* {
+  padding: 0%;
+  margin: 0%;
+}
+
+body {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: $background_color;
+}
+
+header {
+  display: block;
+  min-height: 60px;
+  max-height: 130px;
+  
+  section.main-title {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background: $primary_color;
+    padding: 10px 15px;
+
+    img {
+      width : 60px;
+      height: auto;
+    }
+
+    h2 {
+      color: $white;
+      padding: 5px 10px;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+  }
+
+  section.sub-title {
+    display: grid;
+    align-content: center;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    background: $secondary_color;
+    padding: 5px 10px;
+
+    h3 {
+      display: inline-block;
+      min-width: 175px;
+      max-width: 50%;
+      color: $white;
+      padding: 5px 10px;
+      font-family: Arial, Helvetica, sans-serif;
+      grid-row: 1/3;
+      grid-column: 1/2;
+    }
+
+    .date_n_time {
+      display: inline-block;
+      color: $white;
+      font-size: 10px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      grid-row: 1/3;
+      grid-column: 2/3;
+
+      p {
+        padding: 2px 0px;
+        text-align: right;
+      }
+    }
+  }
+}
+
+main {
+  padding: 10px 15px;
+
+  section.search {
+
+  }
+
+  section.tasks {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-width: 300px;
+    max-width: 480px;
+    padding-top: 0px;
+    padding-bottom: 5px;
+    margin: 1px 2px;
+
+    h4 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 5px 8px;
+      background: $accent_color;
+      font-family: 'Lato', sans-serif;
+      border: none;
+      border-radius: 5px;
+      color: $background_color;
+      margin: 5px 0px 3px 0px;
+
+      *:nth-child(2) {
+        opacity: 50%;
+        font-size: 14px;
+      }
+
+      i {
+        transition: 280ms ease-out;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      i.active {
+        transition: 280ms ease-in;
+        animation: 1.2s ease 0s 1 running ninty_deg_rotate;
+        transform: rotate(180deg);
+      }
+    }
+
+    .tasks_undone, .tasks_done, .tasks_removed, .tasks_missed {
+      position: relative;
+      transition: 350ms ease-out;
+      opacity: 0%;
+      height: 0%;
+      z-index: -1;
+
+      .task {
+        position: absolute;
+        opacity: 0;
+        background: $selection_color;
+        border: none;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 2px 2px 0px 2px; 
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .tasks_undone.expand,
+    .tasks_done.expand,
+    .tasks_removed.expand,
+    .tasks_missed.expand {
+      transition: 350ms ease-in;
+      animation: 1.2s ease 0s 1 running tab_expand;
+      opacity: 100%;
+      height: auto;
+      z-index: 1;
+
+      .task {
+        display: grid;
+        grid-template-rows: minmax(28px, 1fr) 1fr minmax(24px, 28px) minmax(1fr, 18px);
+        grid-template-columns: 20% 20% 20% 20% 5% 5% 5% 5%;
+        position: relative;
+        animation: 0.8s ease 0.1s 1 running tab_expand;
+        opacity: 100%;
+        width: 460px;
+
+        h5 {
+          grid-column: 1/5;
+          grid-row: 1/2;
+          font-size: 14px;
+        }
+
+        .task_details {
+          grid-column: 1/5;
+          grid-row: 2/3;
+          font-size: 14px;
+          text-indent: 20px;
+          opacity: 90%;
+          height: max-content;
+          line-height: 12px;
+        }
+
+        .task_scheduled_for {
+          grid-column: 1/4;
+          grid-row: 3/4;
+          font-size: 14px;
+          font-family: 'Teko', sans-serif;
+          text-indent: 20px;
+          height: max-content;
+        }
+
+        .tags {
+          grid-column: 1/4;
+          grid-row: 4/5;
+          font-size: 14px;
+        }
+
+        .actions {
+          display: grid;
+          grid-template-rows: 1fr 1fr 1fr;
+          grid-template-columns: 1fr 1fr 1fr;
+          grid-column: 6/9;
+          grid-row: 1/4;
+          font-size: 12px;
+
+          .select {
+            grid-row: 2/3;
+            grid-column: 1/2;
+            font-size: 20px;
+
+            abbr {
+
+              i.fa-square-check, i.fa-square {
+                position: relative;
+                z-index: -1;
+                height: 0%;
+                width: 0%;
+                opacity: 0%;
+                transition: 180ms ease-out;
+              }
+
+              i.fa-square-check.active, i.fa-square.active {
+                z-index: 1;
+                opacity: 100%;
+                transition: 180ms ease-in;
+
+                &:hover {
+                  cursor: pointer;
+                  transition: 180ms ease-in-out;
+                  color: $check;
+                }
+              }
+            }
+          }
+
+          input {
+            position: absolute;
+            height: 0%;
+            width: 0%;
+            opacity: 0%;
+            z-index: -1;
+          }
+
+          .edit, .remove {
+            height: 22px;
+            width: 22px;
+            background: none;
+            border: none;
+            border-radius: 3px;
+            transition: 180ms ease-out;
+
+            &:hover {
+              cursor: pointer;
+              transition: 180ms ease-in;
+              color: $white;
+            }
+          }
+                    
+          .edit {
+            grid-column: 3/4;
+            grid-row: 1/2;
+
+            &:hover {
+              background: $edit;
+            }
+          }
+
+          .remove {
+            grid-column: 3/4;
+            grid-row: 3/4;
+
+            &:hover {
+              background: $remove;
+            }
+          }
+        }
+      }
+    }
+
+  }
+}
+
+@keyframes tab_expand {
+  from {
+    opacity: 10%;
+    height: 0px;
+  } to {
+    opacity: 100%;
+    height: auto;
+  }
+}
+
+@keyframes ninty_deg_rotate {
+  from {
+    transform: rotate(0);
+  } to {
+    transform: rotate(180deg);
+  }
+} 

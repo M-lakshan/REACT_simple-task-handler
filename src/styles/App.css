@@ -1,0 +1,347 @@
+* {
+  padding: 0%;
+  margin: 0%;
+}
+
+body {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: #C2B2B4;
+}
+
+header {
+  display: block;
+  min-height: 60px;
+  max-height: 130px;
+}
+header section.main-title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: #3A4454;
+  padding: 10px 15px;
+}
+header section.main-title img {
+  width: 60px;
+  height: auto;
+}
+header section.main-title h2 {
+  color: #FFF;
+  padding: 5px 10px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+header section.sub-title {
+  display: grid;
+  align-content: center;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  background: #53687E;
+  padding: 5px 10px;
+}
+header section.sub-title h3 {
+  display: inline-block;
+  min-width: 175px;
+  max-width: 50%;
+  color: #FFF;
+  padding: 5px 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  grid-row: 1/3;
+  grid-column: 1/2;
+}
+header section.sub-title .date_n_time {
+  display: inline-block;
+  color: #FFF;
+  font-size: 10px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  grid-row: 1/3;
+  grid-column: 2/3;
+}
+header section.sub-title .date_n_time p {
+  padding: 2px 0px;
+  text-align: right;
+}
+
+main {
+  padding: 10px 15px;
+}
+main section.tasks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-width: 300px;
+  max-width: 480px;
+  padding-top: 0px;
+  padding-bottom: 5px;
+  margin: 1px 2px;
+}
+main section.tasks h4 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 5px 8px;
+  background: #6B4E71;
+  font-family: "Lato", sans-serif;
+  border: none;
+  border-radius: 5px;
+  color: #C2B2B4;
+  margin: 5px 0px 3px 0px;
+}
+main section.tasks h4 *:nth-child(2) {
+  opacity: 50%;
+  font-size: 14px;
+}
+main section.tasks h4 i {
+  transition: 280ms ease-out;
+}
+main section.tasks h4 i:hover {
+  cursor: pointer;
+}
+main section.tasks h4 i.active {
+  transition: 280ms ease-in;
+  -webkit-animation: 1.2s ease 0s 1 running ninty_deg_rotate;
+          animation: 1.2s ease 0s 1 running ninty_deg_rotate;
+  transform: rotate(180deg);
+}
+main section.tasks .tasks_undone, main section.tasks .tasks_done, main section.tasks .tasks_removed, main section.tasks .tasks_missed {
+  position: relative;
+  transition: 350ms ease-out;
+  opacity: 0%;
+  height: 0%;
+  z-index: -1;
+}
+main section.tasks .tasks_undone .task, main section.tasks .tasks_done .task, main section.tasks .tasks_removed .task, main section.tasks .tasks_missed .task {
+  position: absolute;
+  opacity: 0;
+  background: #F5DDDD;
+  border: none;
+  border-radius: 5px;
+  padding: 15px;
+  margin: 2px 2px 0px 2px;
+}
+main section.tasks .tasks_undone .task:hover, main section.tasks .tasks_done .task:hover, main section.tasks .tasks_removed .task:hover, main section.tasks .tasks_missed .task:hover {
+  cursor: pointer;
+}
+main section.tasks .tasks_undone.expand,
+main section.tasks .tasks_done.expand,
+main section.tasks .tasks_removed.expand,
+main section.tasks .tasks_missed.expand {
+  transition: 350ms ease-in;
+  -webkit-animation: 1.2s ease 0s 1 running tab_expand;
+          animation: 1.2s ease 0s 1 running tab_expand;
+  opacity: 100%;
+  height: auto;
+  z-index: 1;
+}
+main section.tasks .tasks_undone.expand .task,
+main section.tasks .tasks_done.expand .task,
+main section.tasks .tasks_removed.expand .task,
+main section.tasks .tasks_missed.expand .task {
+  display: grid;
+  grid-template-rows: minmax(28px, 1fr) 1fr minmax(24px, 28px) minmax(1fr, 18px);
+  grid-template-columns: 20% 20% 20% 20% 5% 5% 5% 5%;
+  position: relative;
+  -webkit-animation: 0.8s ease 0.1s 1 running tab_expand;
+          animation: 0.8s ease 0.1s 1 running tab_expand;
+  opacity: 100%;
+  width: 460px;
+}
+main section.tasks .tasks_undone.expand .task h5,
+main section.tasks .tasks_done.expand .task h5,
+main section.tasks .tasks_removed.expand .task h5,
+main section.tasks .tasks_missed.expand .task h5 {
+  grid-column: 1/5;
+  grid-row: 1/2;
+  font-size: 14px;
+}
+main section.tasks .tasks_undone.expand .task .task_details,
+main section.tasks .tasks_done.expand .task .task_details,
+main section.tasks .tasks_removed.expand .task .task_details,
+main section.tasks .tasks_missed.expand .task .task_details {
+  grid-column: 1/5;
+  grid-row: 2/3;
+  font-size: 14px;
+  text-indent: 20px;
+  opacity: 90%;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  line-height: 12px;
+}
+main section.tasks .tasks_undone.expand .task .task_scheduled_for,
+main section.tasks .tasks_done.expand .task .task_scheduled_for,
+main section.tasks .tasks_removed.expand .task .task_scheduled_for,
+main section.tasks .tasks_missed.expand .task .task_scheduled_for {
+  grid-column: 1/4;
+  grid-row: 3/4;
+  font-size: 14px;
+  font-family: "Teko", sans-serif;
+  text-indent: 20px;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+}
+main section.tasks .tasks_undone.expand .task .tags,
+main section.tasks .tasks_done.expand .task .tags,
+main section.tasks .tasks_removed.expand .task .tags,
+main section.tasks .tasks_missed.expand .task .tags {
+  grid-column: 1/4;
+  grid-row: 4/5;
+  font-size: 14px;
+}
+main section.tasks .tasks_undone.expand .task .actions,
+main section.tasks .tasks_done.expand .task .actions,
+main section.tasks .tasks_removed.expand .task .actions,
+main section.tasks .tasks_missed.expand .task .actions {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column: 6/9;
+  grid-row: 1/4;
+  font-size: 12px;
+}
+main section.tasks .tasks_undone.expand .task .actions .select,
+main section.tasks .tasks_done.expand .task .actions .select,
+main section.tasks .tasks_removed.expand .task .actions .select,
+main section.tasks .tasks_missed.expand .task .actions .select {
+  grid-row: 2/3;
+  grid-column: 1/2;
+  font-size: 20px;
+}
+main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square-check, main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square,
+main section.tasks .tasks_done.expand .task .actions .select abbr i.fa-square-check,
+main section.tasks .tasks_done.expand .task .actions .select abbr i.fa-square,
+main section.tasks .tasks_removed.expand .task .actions .select abbr i.fa-square-check,
+main section.tasks .tasks_removed.expand .task .actions .select abbr i.fa-square,
+main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square-check,
+main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square {
+  position: relative;
+  z-index: -1;
+  height: 0%;
+  width: 0%;
+  opacity: 0%;
+  transition: 180ms ease-out;
+}
+main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square-check.active, main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square.active,
+main section.tasks .tasks_done.expand .task .actions .select abbr i.fa-square-check.active,
+main section.tasks .tasks_done.expand .task .actions .select abbr i.fa-square.active,
+main section.tasks .tasks_removed.expand .task .actions .select abbr i.fa-square-check.active,
+main section.tasks .tasks_removed.expand .task .actions .select abbr i.fa-square.active,
+main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square-check.active,
+main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square.active {
+  z-index: 1;
+  opacity: 100%;
+  transition: 180ms ease-in;
+}
+main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square-check.active:hover, main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square.active:hover,
+main section.tasks .tasks_done.expand .task .actions .select abbr i.fa-square-check.active:hover,
+main section.tasks .tasks_done.expand .task .actions .select abbr i.fa-square.active:hover,
+main section.tasks .tasks_removed.expand .task .actions .select abbr i.fa-square-check.active:hover,
+main section.tasks .tasks_removed.expand .task .actions .select abbr i.fa-square.active:hover,
+main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square-check.active:hover,
+main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square.active:hover {
+  cursor: pointer;
+  transition: 180ms ease-in-out;
+  color: #3ead0f;
+}
+main section.tasks .tasks_undone.expand .task .actions input,
+main section.tasks .tasks_done.expand .task .actions input,
+main section.tasks .tasks_removed.expand .task .actions input,
+main section.tasks .tasks_missed.expand .task .actions input {
+  position: absolute;
+  height: 0%;
+  width: 0%;
+  opacity: 0%;
+  z-index: -1;
+}
+main section.tasks .tasks_undone.expand .task .actions .edit, main section.tasks .tasks_undone.expand .task .actions .remove,
+main section.tasks .tasks_done.expand .task .actions .edit,
+main section.tasks .tasks_done.expand .task .actions .remove,
+main section.tasks .tasks_removed.expand .task .actions .edit,
+main section.tasks .tasks_removed.expand .task .actions .remove,
+main section.tasks .tasks_missed.expand .task .actions .edit,
+main section.tasks .tasks_missed.expand .task .actions .remove {
+  height: 22px;
+  width: 22px;
+  background: none;
+  border: none;
+  border-radius: 3px;
+  transition: 180ms ease-out;
+}
+main section.tasks .tasks_undone.expand .task .actions .edit:hover, main section.tasks .tasks_undone.expand .task .actions .remove:hover,
+main section.tasks .tasks_done.expand .task .actions .edit:hover,
+main section.tasks .tasks_done.expand .task .actions .remove:hover,
+main section.tasks .tasks_removed.expand .task .actions .edit:hover,
+main section.tasks .tasks_removed.expand .task .actions .remove:hover,
+main section.tasks .tasks_missed.expand .task .actions .edit:hover,
+main section.tasks .tasks_missed.expand .task .actions .remove:hover {
+  cursor: pointer;
+  transition: 180ms ease-in;
+  color: #FFF;
+}
+main section.tasks .tasks_undone.expand .task .actions .edit,
+main section.tasks .tasks_done.expand .task .actions .edit,
+main section.tasks .tasks_removed.expand .task .actions .edit,
+main section.tasks .tasks_missed.expand .task .actions .edit {
+  grid-column: 3/4;
+  grid-row: 1/2;
+}
+main section.tasks .tasks_undone.expand .task .actions .edit:hover,
+main section.tasks .tasks_done.expand .task .actions .edit:hover,
+main section.tasks .tasks_removed.expand .task .actions .edit:hover,
+main section.tasks .tasks_missed.expand .task .actions .edit:hover {
+  background: #ff7d0b;
+}
+main section.tasks .tasks_undone.expand .task .actions .remove,
+main section.tasks .tasks_done.expand .task .actions .remove,
+main section.tasks .tasks_removed.expand .task .actions .remove,
+main section.tasks .tasks_missed.expand .task .actions .remove {
+  grid-column: 3/4;
+  grid-row: 3/4;
+}
+main section.tasks .tasks_undone.expand .task .actions .remove:hover,
+main section.tasks .tasks_done.expand .task .actions .remove:hover,
+main section.tasks .tasks_removed.expand .task .actions .remove:hover,
+main section.tasks .tasks_missed.expand .task .actions .remove:hover {
+  background: #e6443f;
+}
+
+@-webkit-keyframes tab_expand {
+  from {
+    opacity: 10%;
+    height: 0px;
+  }
+  to {
+    opacity: 100%;
+    height: auto;
+  }
+}
+
+@keyframes tab_expand {
+  from {
+    opacity: 10%;
+    height: 0px;
+  }
+  to {
+    opacity: 100%;
+    height: auto;
+  }
+}
+@-webkit-keyframes ninty_deg_rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}
+@keyframes ninty_deg_rotate {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}/*# sourceMappingURL=App.css.map */
