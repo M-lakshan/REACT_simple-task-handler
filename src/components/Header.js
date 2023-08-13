@@ -1,8 +1,8 @@
 import logo from './../imgs/logo.png';
 import getDateTime from './date_n_time.js';
-// import React, { useEffect } from "react";
 
 const Header = ({sub_title,date_n_time}) => {
+
   return (
     <header className="App-header">
       <section className="main-title">
@@ -12,7 +12,11 @@ const Header = ({sub_title,date_n_time}) => {
       <section className="sub-title">
         <h3 className="sub-title">{sub_title}</h3>
         <div className="date_n_time">
-          <p className="date">{getDateTime("date")}</p>
+          <p className="date">
+            {getDateTime("date")[0]}
+            <sup>{getDateTime("date")[1]}</sup>&nbsp;
+            {getDateTime("date")[2]}
+          </p>
           <p className="time">{getDateTime("time")}</p>
           {/* <p className="time">{useEffect(setInterval(getDateTime("time"),1000),[])}</p> 
           //https://sebhastian.com/setinterval-react/
