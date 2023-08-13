@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { tasks } from './task_list.js';
 import { TasksUndone, TasksDone, TasksRemoved, TasksMissed } from './Task.js';
 
