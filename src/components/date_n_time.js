@@ -1,5 +1,3 @@
-import React from 'react';
-
 function getDateTime(type) {
   let date = new Date();
 
@@ -63,15 +61,13 @@ function getDateTime(type) {
   }
 
   if(type==='date') {
-    return (
-      <React.Fragment>
-        {date.getDate()+
-        date_post_identifier(date.getDate())+' '+
-        week_date_identifier(date.getDay())+' '+
-        month_identifier(date.getMonth())+' '+
-        date.getFullYear()}
-      </React.Fragment>
-      );
+    return ([
+      (date.getDate()),
+      (date_post_identifier(date.getDate())),
+      (+' '+week_date_identifier(date.getDay())
+      +' '+month_identifier(date.getMonth())
+      +' '+date.getFullYear())
+    ]);
   } else {
     let hours = date.getHours();
     let minutes = ((date.getMinutes()<10) ? '0'+date.getMinutes() : date.getMinutes());
