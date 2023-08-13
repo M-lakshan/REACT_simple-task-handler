@@ -1,5 +1,4 @@
-// import React, { useEffect, useCallback } from 'react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { tasks } from './task_list.js';
 import { TasksUndone, TasksDone, TasksRemoved, TasksMissed } from './Task.js';
 
@@ -22,41 +21,54 @@ const check_missed_task_sts = (sts) => {
 export const TasksHandle = (props) => {
   const appStateObj = props.appState;
   const myTasks = tasks;
-  let tasks_undone = appStateObj["tuarr"];
-  let tasks_done = appStateObj["tdarr"];
-  let tasks_missed = appStateObj["trarr"];
-  let tasks_removed = appStateObj["tmarr"];
+  let tasks_undone = appStateObj["tuarr"]["arr"];
+  let tasks_done = appStateObj["tdarr"]["arr"];
+  let tasks_missed = appStateObj["trarr"]["arr"];
+  let tasks_removed = appStateObj["tmarr"]["arr"];
 
-  // const derivate_tasks = useCallback((arr) => {
-  const derivate_tasks = (arr) => {
-    let new_arr =[];
-
-    arr.forEach(tsk => {
-      if(tsk.completed!==true && check_missed_task_sts(tsk.scheduled_for[0])) {
-        new_arr = tasks_missed['arr'];
-      } else if(tsk.removed) {
-        new_arr = tasks_removed['arr'];
-      } else if(tsk.completed && tsk.removed!==false) {
-        new_arr = tasks_done['arr'];
-      } else {
-        new_arr = tasks_undone['arr'];
-      }
+  // useEffect(() => {
+  const derivate_tasks = () => {
+    let new_arr = [];
+    
+    myTasks.forEach(tsk => {
       new_arr.push(tsk);
+      if(tsk.completed!==true && check_missed_task_sts(tsk.scheduled_for[0])) {
+        (!tasks_missed.includes(tsk)) && tasks_missed.push(tsk);
+      } else if(tsk.completed!==true && tsk.removed) {
+        (!tasks_removed.includes(tsk)) && tasks_removed.push(tsk);
+      } else if(tsk.completed && tsk.removed) {
+        (!tasks_done.includes(tsk)) && tasks_done.push(tsk);
+      } else {
+        (!tasks_undone.includes(tsk)) && tasks_undone.push(tsk);
+      }
     });
-
-    return null;
-  // },[]);
   }
-
-  // useEffect(() => derivate_tasks(myTasks),[derivate_tasks]);
+  // },[]);
+  
+  derivate_tasks();
 
   return (
     <section className="tasks">
-      {derivate_tasks(myTasks)}
-      <TasksUndone arr={tasks_undone} func={appStateObj["tuarr"]["func"]}/>
-      {/* <TasksDone arr={tasks_done} func={appStateObj["tdarr"]["func"]}/> */}
-      {/* <TasksRemoved arr={tasks_removed} func={appStateObj["trarr"]["func"]}/> */}
-      {/* <TasksMissed arr={tasks_missed} func={appStateObj["tmarr"]["func"]}/> */}
+      <TasksUndone
+        arr={tasks_undone}
+        func={appStateObj["tuarr"]["func"]}
+        stObj={appStateObj}
+      />
+      <TasksDone 
+        arr={tasks_done}
+        func={appStateObj["tdarr"]["func"]}
+        stObj={appStateObj}
+      />
+      <TasksRemoved 
+        arr={tasks_removed}
+        func={appStateObj["trarr"]["func"]}
+        stObj={appStateObj}
+      />
+      <TasksMissed 
+        arr={tasks_missed}
+        func={appStateObj["tmarr"]["func"]}
+        stObj={appStateObj}
+      />
     </section>
   );
 }
