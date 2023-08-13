@@ -307,6 +307,35 @@ main section.tasks .tasks_removed.expand .task .actions .remove:hover,
 main section.tasks .tasks_missed.expand .task .actions .remove:hover {
   background: #e6443f;
 }
+main section.tasks .tasks_done.expand .task,
+main section.tasks .tasks_removed.expand .task,
+main section.tasks .tasks_missed.expand .task {
+  display: grid;
+  grid-template-rows: 24px !important;
+}
+main section.tasks .tasks_done.expand .task h5,
+main section.tasks .tasks_removed.expand .task h5,
+main section.tasks .tasks_missed.expand .task h5 {
+  grid-column: 1/5;
+  grid-row: 1/2;
+  font-size: 14px;
+  opacity: 60%;
+}
+main section.tasks .tasks_done.expand .task .task_details, main section.tasks .tasks_done.expand .task .task_scheduled_for, main section.tasks .tasks_done.expand .task .tags,
+main section.tasks .tasks_removed.expand .task .task_details,
+main section.tasks .tasks_removed.expand .task .task_scheduled_for,
+main section.tasks .tasks_removed.expand .task .tags,
+main section.tasks .tasks_missed.expand .task .task_details,
+main section.tasks .tasks_missed.expand .task .task_scheduled_for,
+main section.tasks .tasks_missed.expand .task .tags {
+  display: none;
+}
+main section.tasks .tasks_done.expand .task .actions,
+main section.tasks .tasks_removed.expand .task .actions,
+main section.tasks .tasks_missed.expand .task .actions {
+  grid-column: 6/9;
+  grid-row: 1/2;
+}
 
 @-webkit-keyframes tab_expand {
   from {
