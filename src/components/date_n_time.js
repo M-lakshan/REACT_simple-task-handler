@@ -1,16 +1,18 @@
+import React from 'react';
+
 function getDateTime(type) {
   let date = new Date();
 
   const date_post_identifier = (num) => {
     switch(num) {
       case 1: case 21: case 31:
-        return num+"<sup>st</sup>";
+        return "st";
       case 2: case 22:
-        return num+"<sup>nd</sup>";
+        return "nd";
       case 3: case 13: case 33:
-        return num+"<sup>rd</sup>";
+        return "rd";
       default:
-        return num+"<sup>th</sup>";
+        return "th";
     }
   }
   const week_date_identifier = (num) => {
@@ -62,10 +64,13 @@ function getDateTime(type) {
 
   if(type==='date') {
     return (
-      date_post_identifier(date.getDate())+' '+
-      week_date_identifier(date.getDay())+' '+
-      month_identifier(date.getMonth())+' '+
-      date.getFullYear()
+      <React.Fragment>
+        {date.getDate()+
+        date_post_identifier(date.getDate())+' '+
+        week_date_identifier(date.getDay())+' '+
+        month_identifier(date.getMonth())+' '+
+        date.getFullYear()}
+      </React.Fragment>
       );
   } else {
     let hours = date.getHours();
