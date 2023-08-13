@@ -13,8 +13,8 @@ export const tasks = [
     name: "take the trash out",
     details: "",
     scheduled_for: ["",""],
-    completed: false,
-    removed: false,
+    completed: true,
+    removed: true,
     tags: []
   },
   {
@@ -23,13 +23,13 @@ export const tasks = [
     details: "",
     scheduled_for: ["",""],
     completed: false,
-    removed: false,
+    removed: true,
     tags: []
   },
   {
     id: 4,
     name: "practice more in programming",
-    details: "follow up REACT",
+    details: "follow REACT programming trends, common patters for applications",
     scheduled_for: ["08/20",""],
     completed: false,
     removed: false,
@@ -41,7 +41,7 @@ export const tasks = [
     details: "@8.30pm on regional-offce",
     scheduled_for: ["08/20","07:00pm"],
     completed: false,
-    removed: true,
+    removed: false,
     tags: []
   },
   {
@@ -51,6 +51,15 @@ export const tasks = [
     scheduled_for: ["08/20","10:00pm"],
     completed: false,
     removed: false,
+    tags: []
+  },
+  {
+    id: 7,
+    name: "clean the roof-top",
+    details: "gonna rain soon... better to clean the roof",
+    scheduled_for: ["",""],
+    completed: false,
+    removed: true,
     tags: []
   },
 ];
