@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 const Task = (props) => {
   let {id,name,details,scheduled_for,completed,tags,removed} = props.info;
-  
+  let sec_st_obj = props.sec_state[2];
+
   const retrieve_scheduled_info = () => {
     if(scheduled_for[0]!=="" && scheduled_for[1]==="") {
       return `[ scheduled for ${scheduled_for[0]} ]`;
@@ -16,11 +17,16 @@ const Task = (props) => {
   }
   const checkHandleClick = (elm) => {
     let target = elm.currentTarget.querySelector('.active');
+    let target_elm = elm.currentTarget.parentElement.parentElement.parentElement.classList[0];
     
     if(target.classList.contains("fa-square-check")) {
-      elm.currentTarget.querySelector(".fa-square").classList.add("active")
+      document.querySelector('.'+target_elm)
+        .querySelector(".actions").children[0].children[0]
+        .querySelector(".fa-square").classList.add("active")
     } else {
-      elm.currentTarget.querySelector(".fa-square-check").classList.add("active")
+      document.querySelector('.'+target_elm)
+        .querySelector(".actions").children[0].children[0]
+        .querySelector(".fa-square-check").classList.add("active")
     }
 
     target.classList.remove("active");
@@ -32,24 +38,18 @@ const Task = (props) => {
     ));
 
     let updated_arr = props.sec_state[1].filter(each_tsk => each_tsk.id!==target_id);
-    let updated_elm = props.sec_state[1].filter(each_tsk => each_tsk.id===target_id);
+    let updated_elm = props.sec_state[1].filter(each_tsk => each_tsk.id===target_id)[0];
     updated_elm.completed = true;
+    updated_elm.removed = true;
     
-    setTimeout(() => {props.sec_state[2](updated_arr)},50);
-    // setTimeout(taskUploader("tdarr",updated_elm),250);
+    sec_st_obj["tuarr"]["func"](updated_arr);
+    
+    setTimeout(() => {
+      let updating_arr = sec_st_obj["tdarr"]["arr"];
+      (!updating_arr.includes(updated_elm)) && updating_arr.push(updated_elm);
+      sec_st_obj["tdarr"]["func"](updating_arr);
+    },50);
   }
-
-  // const taskUploader = (type,arr) =>{
-  //   if(type==="tdarr") {
-  //     setTDArray(arr);
-  //   } else if(type==="trarr") {
-  //     setTRArray(arr);
-  //   } else if(type==="tmarr") {
-  //     setTMArray(arr);
-  //   } else {
-  //     setTUArray(arr);
-  //   }
-  // }
 
   return (
     <div className={`task_${id} task`}>
@@ -76,37 +76,37 @@ const Task = (props) => {
         </label>}
         {(removed!==true) && <input type="checkbox" id={`checkbox_${id}`} onChange={checkHandleChange}/>}
         <button className="edit"><abbr title="&nbsp;edit&nbsp;"><i className="fa-solid fa-pen"></i></abbr></button>
-        <button className="remove"><abbr title="&nbsp;remove&nbsp;"><i className="fa-solid fa-xmark"></i></abbr></button>
+        {(removed!==true) && <button className="remove"><abbr title="&nbsp;remove&nbsp;"><i className="fa-solid fa-xmark"></i></abbr></button>}
       </div>
     </div>
   );
 }
 
-const GeneralSubTitleComponents = ({arr_alt,func}) => {
+const GeneralSubTitleComponents = ({sec,arr_alt,func}) => {
   return (
     <React.Fragment>
       <span>- {arr_alt.length}&nbsp;{(arr_alt.length===1) ? "item" : "items"}&nbsp;-</span>
-      <i className="fa-solid fa-angle-down" onClick={func}></i>
+      <i className={(sec==="tasks_undone") ? "fa-solid fa-angle-up" : "fa-solid fa-angle-down"} onClick={func}></i>
     </React.Fragment>
   );
 }
 
-export const TasksUndone = ({arr,func}) => {
+export const TasksUndone = ({arr,stObj}) => {
   const [tuexpand,setTUExpand] = useState("down");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
     setTUExpand(((tuexpand==="down") ? "up" : "down"));
   }
-
+  
   if(arr.length > 0) {
     return (
       <React.Fragment>
         <h4>
           <span>&#8227;&nbsp;Undone Tasks</span>
-          <GeneralSubTitleComponents arr_alt={arr} func={handleClick}/>
+          <GeneralSubTitleComponents sec={"tasks_undone"} arr_alt={arr} func={handleClick}/>
         </h4>
         <div className={(tuexpand==="down") ? "tasks_undone expand" : "tasks_undone"} >
-          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={["tuarr",arr,func]}/>)}
+          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={["tuarr",arr,stObj]}/>)}
         </div>
       </React.Fragment>
     );
@@ -116,7 +116,7 @@ export const TasksUndone = ({arr,func}) => {
 }
 
 export const TasksDone = ({arr,func}) => {
-  const [tdexpand,setTDExpand] = useState("down");
+  const [tdexpand,setTDExpand] = useState("up");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
     setTDExpand(((tdexpand==="down") ? "up" : "down"));
@@ -140,7 +140,7 @@ export const TasksDone = ({arr,func}) => {
 }
 
 export const TasksRemoved = ({arr,func}) => {
-  const [trexpand,setTRExpand] = useState("down");
+  const [trexpand,setTRExpand] = useState("up");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
     setTRExpand(((trexpand==="down") ? "up" : "down"));
@@ -164,7 +164,7 @@ export const TasksRemoved = ({arr,func}) => {
 }
 
 export const TasksMissed = ({arr,func}) => {
-  const [tmexpand,setTMExpand] = useState("down");
+  const [tmexpand,setTMExpand] = useState("up");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
     setTMExpand(((tmexpand==="down") ? "up" : "down"));
