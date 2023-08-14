@@ -28,7 +28,6 @@ const Main = () => {
 
   return (
     <main className="App-main">
-      <SearchForTask />
       <TasksHandle appState={stateObj}/>
     </main>
   );
