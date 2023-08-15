@@ -210,13 +210,13 @@ main section.tasks .tasks_missed.expand .task .actions .select {
   grid-column: 1/2;
   font-size: 20px;
 }
-main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square-check, main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square,
-main section.tasks .tasks_done.expand .task .actions .select abbr i.fa-square-check,
+main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square, main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square-check,
 main section.tasks .tasks_done.expand .task .actions .select abbr i.fa-square,
-main section.tasks .tasks_removed.expand .task .actions .select abbr i.fa-square-check,
+main section.tasks .tasks_done.expand .task .actions .select abbr i.fa-square-check,
 main section.tasks .tasks_removed.expand .task .actions .select abbr i.fa-square,
-main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square-check,
-main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square {
+main section.tasks .tasks_removed.expand .task .actions .select abbr i.fa-square-check,
+main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square,
+main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square-check {
   position: relative;
   z-index: -1;
   height: 0%;
@@ -224,26 +224,34 @@ main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square 
   opacity: 0%;
   transition: 180ms ease-out;
 }
-main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square-check.active, main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square.active,
-main section.tasks .tasks_done.expand .task .actions .select abbr i.fa-square-check.active,
+main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square.active,
 main section.tasks .tasks_done.expand .task .actions .select abbr i.fa-square.active,
-main section.tasks .tasks_removed.expand .task .actions .select abbr i.fa-square-check.active,
 main section.tasks .tasks_removed.expand .task .actions .select abbr i.fa-square.active,
-main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square-check.active,
 main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square.active {
   z-index: 1;
   opacity: 100%;
   transition: 180ms ease-in;
 }
-main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square-check.active:hover, main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square.active:hover,
-main section.tasks .tasks_done.expand .task .actions .select abbr i.fa-square-check.active:hover,
+main section.tasks .tasks_undone.expand .task .actions .select abbr i.fa-square.active:hover,
 main section.tasks .tasks_done.expand .task .actions .select abbr i.fa-square.active:hover,
-main section.tasks .tasks_removed.expand .task .actions .select abbr i.fa-square-check.active:hover,
 main section.tasks .tasks_removed.expand .task .actions .select abbr i.fa-square.active:hover,
-main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square-check.active:hover,
 main section.tasks .tasks_missed.expand .task .actions .select abbr i.fa-square.active:hover {
-  cursor: pointer;
   transition: 180ms ease-in-out;
+  color: #3ead0f;
+}
+main section.tasks .tasks_undone.expand .task .actions .select abbr:hover,
+main section.tasks .tasks_done.expand .task .actions .select abbr:hover,
+main section.tasks .tasks_removed.expand .task .actions .select abbr:hover,
+main section.tasks .tasks_missed.expand .task .actions .select abbr:hover {
+  cursor: pointer;
+}
+main section.tasks .tasks_undone.expand .task .actions .select abbr:hover i.fa-square-check,
+main section.tasks .tasks_done.expand .task .actions .select abbr:hover i.fa-square-check,
+main section.tasks .tasks_removed.expand .task .actions .select abbr:hover i.fa-square-check,
+main section.tasks .tasks_missed.expand .task .actions .select abbr:hover i.fa-square-check {
+  z-index: 1;
+  opacity: 100%;
+  transition: 180ms ease-in;
   color: #3ead0f;
 }
 main section.tasks .tasks_undone.expand .task .actions input,
@@ -372,5 +380,29 @@ main section.tasks .tasks_missed.expand .task .actions {
   }
   to {
     transform: rotate(180deg);
+  }
+}
+@-webkit-keyframes blob_out {
+  from {
+    z-index: 1;
+    opacity: 100%;
+    transition: 180ms ease-in;
+  }
+  to {
+    z-index: -1;
+    opacity: 0%;
+    transition: 180ms ease-out;
+  }
+}
+@keyframes blob_out {
+  from {
+    z-index: 1;
+    opacity: 100%;
+    transition: 180ms ease-in;
+  }
+  to {
+    z-index: -1;
+    opacity: 0%;
+    transition: 180ms ease-out;
   }
 }/*# sourceMappingURL=App.css.map */

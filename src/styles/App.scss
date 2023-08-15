@@ -217,7 +217,7 @@ main {
 
             abbr {
 
-              i.fa-square-check, i.fa-square {
+              i.fa-square, i.fa-square-check {
                 position: relative;
                 z-index: -1;
                 height: 0%;
@@ -226,14 +226,24 @@ main {
                 transition: 180ms ease-out;
               }
 
-              i.fa-square-check.active, i.fa-square.active {
+              i.fa-square.active {
                 z-index: 1;
                 opacity: 100%;
                 transition: 180ms ease-in;
 
                 &:hover {
-                  cursor: pointer;
                   transition: 180ms ease-in-out;
+                  color: $check;
+                }
+              }
+
+              &:hover {
+                cursor: pointer;
+
+                i.fa-square-check {
+                  z-index: 1;
+                  opacity: 100%;
+                  transition: 180ms ease-in;
                   color: $check;
                 }
               }
@@ -328,4 +338,16 @@ main {
   } to {
     transform: rotate(180deg);
   }
-} 
+}
+
+@keyframes blob_out {
+  from {
+    z-index: 1;
+    opacity: 100%;
+    transition: 180ms ease-in;
+  } to {
+    z-index: -1;
+    opacity: 0%;
+    transition: 180ms ease-out;
+  }
+}
