@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TasksHandle from './TasksHandle.js';
 
-const Main = () => {
+const Main = ({taskManage}) => {
   const [tuarr,setTUArray] = useState([]);
   const [tdarr,setTDArray] = useState([]);
   const [trarr,setTRArray] = useState([]);
@@ -27,7 +27,7 @@ const Main = () => {
 
   return (
     <main className="App-main">
-      <TasksHandle appState={stateObj}/>
+      <TasksHandle appState={stateObj} tskMngr={taskManage}/>
     </main>
   );
 }

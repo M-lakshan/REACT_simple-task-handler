@@ -21,6 +21,7 @@ const check_missed_task_sts = (sts) => {
 export const TasksHandle = (props) => {
   const appStateObj = props.appState;
   const myTasks = tasks;
+  const taskManagerArr = props.tskMngr;
   let tasks_undone = appStateObj["tuarr"]["arr"];
   let tasks_done = appStateObj["tdarr"]["arr"];
   let tasks_missed = appStateObj["trarr"]["arr"];
@@ -53,21 +54,25 @@ export const TasksHandle = (props) => {
         arr={tasks_undone}
         func={appStateObj["tuarr"]["func"]}
         stObj={appStateObj}
+        tskMngrArr={taskManagerArr}
       />
       <TasksDone 
         arr={tasks_done}
         func={appStateObj["tdarr"]["func"]}
         stObj={appStateObj}
+        tskMngrArr={taskManagerArr}
       />
       <TasksRemoved 
         arr={tasks_removed}
         func={appStateObj["trarr"]["func"]}
         stObj={appStateObj}
+        tskMngrArr={taskManagerArr}
       />
       <TasksMissed 
         arr={tasks_missed}
         func={appStateObj["tmarr"]["func"]}
         stObj={appStateObj}
+        tskMngrArr={taskManagerArr}
       />
     </section>
   );
