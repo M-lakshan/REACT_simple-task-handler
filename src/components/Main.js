@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import TasksHandle from './TasksHandle.js';
-import SearchForTask from './SearchForTasks.js';
 
 const Main = () => {
   const [tuarr,setTUArray] = useState([]);
