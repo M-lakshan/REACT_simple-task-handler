@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 const Task = (props) => {
   let {id,name,details,scheduled_for,completed,tags,removed} = props.info;
   let sec_st_obj = props.sec_state[2];
+  let tskMngrArr = props.sec_state[3];
 
   const retrieve_scheduled_info = () => {
     if(scheduled_for[0]!=="" && scheduled_for[1]==="") {
@@ -69,6 +70,9 @@ const Task = (props) => {
       sec_st_obj["trarr"]["func"](updating_arr);
     },50);
   }
+  const triggerTskMng = (tsk_info) => {
+    tskMngrArr[1](!tskMngrArr[0],tsk_info);
+  }
  
   return (
     <div className={`task_${id} task`}>
@@ -94,7 +98,7 @@ const Task = (props) => {
           </abbr>
         </label>}
         {(removed!==true) && <input type="checkbox" id={`checkbox_${id}`} className="checkbox" onChange={checkHandleChange}/>}
-        <button className="edit">
+        <button className="edit" onClick={triggerTskMng(props.info)}>
           <abbr title="&nbsp;edit&nbsp;"><i className="fa-solid fa-pen"></i></abbr>
         </button>
         {(removed!==true) && <button className="remove" onClick={removeHandleClick}>
@@ -114,7 +118,7 @@ const GeneralSubTitleComponents = ({sec,arr_alt,func}) => {
   );
 }
 
-export const TasksUndone = ({arr,stObj}) => {
+export const TasksUndone = ({arr,stObj,tskMngrArr}) => {
   const [tuexpand,setTUExpand] = useState("down");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
@@ -129,7 +133,7 @@ export const TasksUndone = ({arr,stObj}) => {
           <GeneralSubTitleComponents sec={"tasks_undone"} arr_alt={arr} func={handleClick}/>
         </h4>
         <div className={(tuexpand==="down") ? "tasks_undone expand" : "tasks_undone"} >
-          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={["tuarr",arr,stObj]}/>)}
+          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={["tuarr",arr,stObj,tskMngrArr]}/>)}
         </div>
       </React.Fragment>
     );
@@ -138,7 +142,7 @@ export const TasksUndone = ({arr,stObj}) => {
   }
 }
 
-export const TasksDone = ({arr,func}) => {
+export const TasksDone = ({arr,func,tskMngrArr}) => {
   const [tdexpand,setTDExpand] = useState("up");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
@@ -153,7 +157,7 @@ export const TasksDone = ({arr,func}) => {
           <GeneralSubTitleComponents arr_alt={arr} func={handleClick}/>
         </h4>
         <div className={(tdexpand==="down") ? "tasks_done expand" : "tasks_done"}>
-          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={["tdarr",arr,func]}/>)}
+          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={["tdarr",arr,func,tskMngrArr]}/>)}
         </div>
       </React.Fragment>
     );
@@ -162,7 +166,7 @@ export const TasksDone = ({arr,func}) => {
   }
 }
 
-export const TasksRemoved = ({arr,func}) => {
+export const TasksRemoved = ({arr,func,tskMngrArr}) => {
   const [trexpand,setTRExpand] = useState("up");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
@@ -177,7 +181,7 @@ export const TasksRemoved = ({arr,func}) => {
           <GeneralSubTitleComponents arr_alt={arr} func={handleClick}/>
         </h4>
         <div className={(trexpand==="down") ? "tasks_removed expand" : "tasks_removed"}>
-          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={["trarr",arr,func]}/>)}
+          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={["trarr",arr,func,tskMngrArr]}/>)}
         </div>
       </React.Fragment>
     );
@@ -186,7 +190,7 @@ export const TasksRemoved = ({arr,func}) => {
   }
 }
 
-export const TasksMissed = ({arr,func}) => {
+export const TasksMissed = ({arr,func,tskMngrArr}) => {
   const [tmexpand,setTMExpand] = useState("up");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
@@ -201,7 +205,7 @@ export const TasksMissed = ({arr,func}) => {
           <GeneralSubTitleComponents arr_alt={arr} func={handleClick}/>
         </h4>
         <div className={(tmexpand==="down") ? "tasks_missed expand" : "tasks_missed"}>
-          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={["tmarr",arr,func]}/>)}
+          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={["tmarr",arr,func,tskMngrArr]}/>)}
         </div>
       </React.Fragment>
     );
