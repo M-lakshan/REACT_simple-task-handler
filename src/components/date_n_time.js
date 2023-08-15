@@ -1,5 +1,4 @@
-function getDateTime(type) {
-  let date = new Date();
+function getDateTime(type,date) {
 
   const date_post_identifier = (num) => {
     switch(num) {
@@ -64,7 +63,7 @@ function getDateTime(type) {
     return ([
       (date.getDate()),
       (date_post_identifier(date.getDate())),
-      (+' '+week_date_identifier(date.getDay())
+      (' '+week_date_identifier(date.getDay())
       +' '+month_identifier(date.getMonth())
       +' '+date.getFullYear())
     ]);
