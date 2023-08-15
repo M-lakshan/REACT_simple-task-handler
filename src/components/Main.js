@@ -1,33 +1,65 @@
 import React, { useState } from 'react';
-import TasksHandle from './TasksHandle.js';
+import { tasks } from './task_list.js';
+import { TasksUndone, TasksDone, TasksRemoved, TasksMissed } from './Task.js';
 
-const Main = () => {
-  const [tuarr,setTUArray] = useState([]);
-  const [tdarr,setTDArray] = useState([]);
-  const [trarr,setTRArray] = useState([]);
-  const [tmarr,setTMArray] = useState([]);
-  const stateObj = {
-    "tuarr": {
-      arr: tuarr,
-      func: (param) => setTUArray(param)
-    },
-    "tdarr": {
-      arr: tdarr,
-      func: (param) => setTDArray(param)
-    },
-    "trarr": {
-      arr: trarr,
-      func: (param) => setTRArray(param)
-    },
-    "tmarr": {
-      arr: tmarr,
-      func: (param) => setTMArray(param)
-    },
+const check_missed_task_sts = (sts) => {
+  if(sts.length<2) {
+    return false;
+  } else {
+    let current_date = new Date();
+    let scheduled_date_i = parseInt(sts.substring(0,sts.indexOf('/')));
+    let scheduled_date_ii = parseInt(sts.substring((sts.indexOf('/')+1),sts.length));
+
+    return ((current_date.getDate() > scheduled_date_i) && ((current_date.getMonth()+1) > scheduled_date_ii));
   }
+}
+  
+const Main = () => {
+  const [myTasks,setMyTasks] = useState(tasks);
+  let tasks_undone = [];
+  let tasks_done = [];
+  let tasks_missed = [];
+  let tasks_removed = [];
+
+  const derivate_tasks = (arr) => {
+    let new_arr = [];
+    
+    arr.forEach(tsk => {
+      new_arr.push(tsk);
+      if(tsk.completed!==true && check_missed_task_sts(tsk.scheduled_for[0])) {
+        tasks_missed.push(tsk);
+      } else if(tsk.removed) {
+        tasks_removed.push(tsk);
+      } else if(tsk.completed && tsk.removed!==true) {
+        tasks_done.push(tsk);
+      } else {
+        tasks_undone.push(tsk);
+      }
+    });
+  }
+
+  derivate_tasks(myTasks);
 
   return (
     <main className="App-main">
-      <TasksHandle appState={stateObj}/>
+      <section className="tasks">
+        <TasksUndone 
+          arr={tasks_undone}
+          tsk_st={[myTasks,(update) => setMyTasks(update)]}
+        />
+        <TasksDone 
+          arr={tasks_done}
+          tsk_st={[myTasks,(update) => setMyTasks(update)]}
+        />
+        <TasksRemoved 
+          arr={tasks_removed}
+          tsk_st={[myTasks,(update) => setMyTasks(update)]}
+        />
+        <TasksMissed 
+          arr={tasks_missed}
+          tsk_st={[myTasks,(update) => setMyTasks(update)]}
+        />
+      </section>
     </main>
   );
 }
