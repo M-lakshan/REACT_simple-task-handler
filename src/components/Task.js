@@ -51,7 +51,7 @@ const Task = (props) => {
     },50);
   }
   const removeHandleClick = (elm) => {
-    console.log(elm.currentTarget.parentElement.querySelector(".checkbox").id)
+    // console.log(elm.currentTarget.parentElement.querySelector(".checkbox").id)
     let target_id = parseInt(elm.currentTarget.parentElement.querySelector(".checkbox").id.toString().substring(
       elm.currentTarget.parentElement.querySelector(".checkbox").id.toString().indexOf("_")+1,
       elm.currentTarget.parentElement.querySelector(".checkbox").id.toString().length
@@ -82,7 +82,7 @@ const Task = (props) => {
       <p className="tags">
         {tags.map(tg => 
           <span>
-            <i class="Namefa-solid fa-tag"></i>&nbsp;{tg}
+            <i className="fa-solid fa-tag"></i>&nbsp;{tg}
           </span>
         )}
       </p>
