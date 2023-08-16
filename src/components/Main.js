@@ -36,7 +36,6 @@ const Main = () => {
         tasks_undone.push(tsk);
       }
     });
-  }
 
   derivate_tasks(myTasks);
 

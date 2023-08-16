@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 const Task = (props) => {
   let { id, name, details, scheduled_for, completed, tags, removed } = props.info;
@@ -42,6 +42,7 @@ const Task = (props) => {
     
     general_arr_update(target_id,"remove");
   }
+
   const editHandleClick = (elm) => {
     let target_id = parseInt(elm.currentTarget.parentElement.querySelector(".checkbox").id.toString().substring(
       elm.currentTarget.parentElement.querySelector(".checkbox").id.toString().indexOf("_")+1,
@@ -75,7 +76,7 @@ const Task = (props) => {
           </abbr>
         </label>}
         {(removed!==true) && <input type="checkbox" id={`checkbox_${id}`} className="checkbox" onChange={checkHandleChange}/>}
-        <button className="edit">
+        <button className="edit" onClick={triggerTskMng(props.info)}>
           <abbr title="&nbsp;edit&nbsp;"><i className="fa-solid fa-pen"></i></abbr>
         </button>
         {(removed!==true) && <button className="remove" onClick={removeHandleClick}>
@@ -94,6 +95,7 @@ const GeneralSubTitleComponents = ({ sec, arr_alt, dropdownEffect }) => {
     </React.Fragment>
   );
 }
+
 
 export const TasksUndone = ({arr,tsk_st}) => {
   const [tuexpand,setTUExpand] = useState("down");
