@@ -1,9 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-const Task = (props) => {
-  let {id,name,details,scheduled_for,completed,tags,removed} = props.info;
-  let sec_st_obj = props.sec_state[2];
-  let tskMngrArr = props.sec_state[3];
+const Task = ({ info, sec_state, edit }) => {
+  let { id, name, details, scheduled_for, completed, tags, removed } = info;
 
   const retrieve_scheduled_info = () => {
     if(scheduled_for[0]!=="" && scheduled_for[1]==="") {
@@ -16,64 +14,57 @@ const Task = (props) => {
       return false;
     }
   }
-  const checkHandleClick = (elm) => {
-    let target = elm.currentTarget.querySelector('.active');
-    let target_elm = elm.currentTarget.parentElement.parentElement.parentElement.classList[0];
+  const general_arr_update = (target,sts) => {
+    let updating_arr = sec_state[0].filter(each_tsk => each_tsk.id!==target);
+    let updating_elm = sec_state[0].filter(each_tsk => each_tsk.id===target)[0];
     
-    if(target.classList.contains("fa-square-check")) {
-      document.querySelector('.'+target_elm)
-        .querySelector(".actions").children[0].children[0]
-        .querySelector(".fa-square").classList.add("active")
-    } else {
-      document.querySelector('.'+target_elm)
-        .querySelector(".actions").children[0].children[0]
-        .querySelector(".fa-square-check").classList.add("active")
-    }
+    (sts==="remove") ? updating_elm.removed = true : updating_elm.completed = true;
+    updating_arr.push(updating_elm);
 
-    target.classList.remove("active");
+    sec_state[1](updating_arr);
   }
+
   const checkHandleChange = (elm) => {
-    let target_id = parseInt(elm.currentTarget.id.toString().substring(
-      elm.currentTarget.id.toString().indexOf("_")+1,
-      elm.currentTarget.id.toString().length
+    let target_path = elm.currentTarget;
+    let target_id = parseInt(target_path.id.toString().substring(
+      target_path.id.toString().indexOf("_")+1,
+      target_path.id.toString().length
     ));
 
-    let updated_arr = props.sec_state[1].filter(each_tsk => each_tsk.id!==target_id);
-    let updated_elm = props.sec_state[1].filter(each_tsk => each_tsk.id===target_id)[0];
-    updated_elm.completed = true;
-    updated_elm.removed = true;
-    
-    sec_st_obj["tuarr"]["func"](updated_arr);
-    
-    setTimeout(() => {
-      let updating_arr = sec_st_obj["tdarr"]["arr"];
-      (!updating_arr.includes(updated_elm)) && updating_arr.push(updated_elm);
-      sec_st_obj["tdarr"]["func"](updating_arr);
-    },50);
+    general_arr_update(target_id,"completed");
   }
   const removeHandleClick = (elm) => {
-    // console.log(elm.currentTarget.parentElement.querySelector(".checkbox").id)
     let target_id = parseInt(elm.currentTarget.parentElement.querySelector(".checkbox").id.toString().substring(
       elm.currentTarget.parentElement.querySelector(".checkbox").id.toString().indexOf("_")+1,
       elm.currentTarget.parentElement.querySelector(".checkbox").id.toString().length
     ));
+    
+    general_arr_update(target_id,"remove");
+  }
+  const editHandleClick = (elm) => {
+    let target_id = parseInt(elm.currentTarget.parentElement.parentElement.classList[0].toString().substring(
+      elm.currentTarget.parentElement.parentElement.classList[0].toString().indexOf("_")+1,
+      elm.currentTarget.parentElement.parentElement.classList[0].toString().length
+    ));
+    let target_obj = sec_state[0].filter(each_tsk => each_tsk.id===target_id)[0];
+    
+    if(edit[0][1]===target_obj) {
+      document.querySelector('footer').classList.remove('focus_out');
+      edit[1]([false,{
+        id: '',
+        name: '',
+        details: '',
+        scheduled_for: '',
+        tags: '',
+        completed: '',
+        removed: ''
+      }]);
+    } else {
+      document.querySelector('footer').classList.add('focus_out');
+      edit[1]([true,target_obj]);
+    }
+  }
 
-    let updated_arr = props.sec_state[1].filter(each_tsk => each_tsk.id!==target_id);
-    let updated_elm = props.sec_state[1].filter(each_tsk => each_tsk.id===target_id)[0];
-    updated_elm.removed = true;
-    
-    sec_st_obj["tuarr"]["func"](updated_arr);
-    
-    setTimeout(() => {
-      let updating_arr = sec_st_obj["trarr"]["arr"];
-      (!updating_arr.includes(updated_elm)) && updating_arr.push(updated_elm);
-      sec_st_obj["trarr"]["func"](updating_arr);
-    },50);
-  }
-  const triggerTskMng = (tsk_info) => {
-    tskMngrArr[1](!tskMngrArr[0],tsk_info);
-  }
- 
   return (
     <div className={`task_${id} task`}>
       <h5>{(completed || removed) ? <s>{name}</s> : name}</h5>
@@ -92,13 +83,18 @@ const Task = (props) => {
       </p>
       <div className="actions">
         {(removed!==true) && <label className="select" htmlFor={`checkbox_${id}`}>
-          <abbr title="&nbsp;complete&nbsp;" onClick={checkHandleClick}>
-            <i className={(completed) ? "fa-solid fa-square-check active" : "fa-solid fa-square-check"}></i>
-            <i className={(completed) ? "fa-regular fa-square" : "fa-regular fa-square active"}></i>
+          <abbr title="&nbsp;complete&nbsp;">
+            <i className={(completed!==true) ? "fa-solid fa-square-check" : "fa-solid fa-square-check active"}></i>
+            <i className={(completed!==true) ? "fa-regular fa-square active" : "fa-regular fa-square"}></i>
           </abbr>
         </label>}
-        {(removed!==true) && <input type="checkbox" id={`checkbox_${id}`} className="checkbox" onChange={checkHandleChange}/>}
-        <button className="edit" onClick={triggerTskMng(props.info)}>
+        {(removed!==true) && <input 
+          type="checkbox"
+          id={`checkbox_${id}`}
+          className="checkbox"
+          onChange={checkHandleChange}
+        />}
+        <button className="edit" onClick={editHandleClick}>
           <abbr title="&nbsp;edit&nbsp;"><i className="fa-solid fa-pen"></i></abbr>
         </button>
         {(removed!==true) && <button className="remove" onClick={removeHandleClick}>
@@ -109,16 +105,16 @@ const Task = (props) => {
   );
 }
 
-const GeneralSubTitleComponents = ({sec,arr_alt,func}) => {
+const GeneralSubTitleComponents = ({ sec, arr_alt, dropdownEffect }) => {
   return (
     <React.Fragment>
       <span>- {arr_alt.length}&nbsp;{(arr_alt.length===1) ? "item" : "items"}&nbsp;-</span>
-      <i className={(sec==="tasks_undone") ? "fa-solid fa-angle-up" : "fa-solid fa-angle-down"} onClick={func}></i>
+      <i className={(sec==="tasks_undone") ? "fa-solid fa-angle-up" : "fa-solid fa-angle-down"} onClick={dropdownEffect}></i>
     </React.Fragment>
   );
 }
 
-export const TasksUndone = ({arr,stObj,tskMngrArr}) => {
+export const TasksUndone = ({ arr, tsk_st, cur_edit}) => {
   const [tuexpand,setTUExpand] = useState("down");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
@@ -130,10 +126,10 @@ export const TasksUndone = ({arr,stObj,tskMngrArr}) => {
       <React.Fragment>
         <h4>
           <span>&#8227;&nbsp;Undone Tasks</span>
-          <GeneralSubTitleComponents sec={"tasks_undone"} arr_alt={arr} func={handleClick}/>
+          <GeneralSubTitleComponents sec={"tasks_undone"} arr_alt={arr} dropdownEffect={handleClick}/>
         </h4>
         <div className={(tuexpand==="down") ? "tasks_undone expand" : "tasks_undone"} >
-          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={["tuarr",arr,stObj,tskMngrArr]}/>)}
+          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={tsk_st} edit={cur_edit}/>)}
         </div>
       </React.Fragment>
     );
@@ -142,7 +138,7 @@ export const TasksUndone = ({arr,stObj,tskMngrArr}) => {
   }
 }
 
-export const TasksDone = ({arr,func,tskMngrArr}) => {
+export const TasksDone = ({ arr, tsk_st, cur_edit}) => {
   const [tdexpand,setTDExpand] = useState("up");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
@@ -154,10 +150,10 @@ export const TasksDone = ({arr,func,tskMngrArr}) => {
       <React.Fragment>
         <h4>
           <span>&#8227;&nbsp;Completed Tasks</span>
-          <GeneralSubTitleComponents arr_alt={arr} func={handleClick}/>
+          <GeneralSubTitleComponents arr_alt={arr} dropdownEffect={handleClick}/>
         </h4>
         <div className={(tdexpand==="down") ? "tasks_done expand" : "tasks_done"}>
-          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={["tdarr",arr,func,tskMngrArr]}/>)}
+          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={tsk_st} edit={cur_edit}/>)}
         </div>
       </React.Fragment>
     );
@@ -166,7 +162,7 @@ export const TasksDone = ({arr,func,tskMngrArr}) => {
   }
 }
 
-export const TasksRemoved = ({arr,func,tskMngrArr}) => {
+export const TasksRemoved = ({ arr, tsk_st, cur_edit }) => {
   const [trexpand,setTRExpand] = useState("up");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
@@ -178,10 +174,10 @@ export const TasksRemoved = ({arr,func,tskMngrArr}) => {
       <React.Fragment>
         <h4>
           <span>&#8227;&nbsp;Removed Tasks</span>
-          <GeneralSubTitleComponents arr_alt={arr} func={handleClick}/>
+          <GeneralSubTitleComponents arr_alt={arr} dropdownEffect={handleClick}/>
         </h4>
         <div className={(trexpand==="down") ? "tasks_removed expand" : "tasks_removed"}>
-          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={["trarr",arr,func,tskMngrArr]}/>)}
+          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={tsk_st} edit={cur_edit}/>)}
         </div>
       </React.Fragment>
     );
@@ -190,7 +186,7 @@ export const TasksRemoved = ({arr,func,tskMngrArr}) => {
   }
 }
 
-export const TasksMissed = ({arr,func,tskMngrArr}) => {
+export const TasksMissed = ({ arr, tsk_st, cur_edit}) => {
   const [tmexpand,setTMExpand] = useState("up");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
@@ -202,10 +198,10 @@ export const TasksMissed = ({arr,func,tskMngrArr}) => {
       <React.Fragment>
         <h4>
           <span>&#8227;&nbsp;Missed Tasks</span>
-          <GeneralSubTitleComponents arr_alt={arr} func={handleClick}/>
+          <GeneralSubTitleComponents arr_alt={arr} dropdownEffect={handleClick}/>
         </h4>
         <div className={(tmexpand==="down") ? "tasks_missed expand" : "tasks_missed"}>
-          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={["tmarr",arr,func,tskMngrArr]}/>)}
+          {arr.map((tsk,ky) => <Task key={ky} info={tsk} sec_state={tsk_st} edit={cur_edit}/>)}
         </div>
       </React.Fragment>
     );
