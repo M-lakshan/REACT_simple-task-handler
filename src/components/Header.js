@@ -1,14 +1,13 @@
 import logo from './../imgs/logo.png';
 import getDateTime from './date_n_time.js';
-import {useEffect} from 'react';
 
-const Header = ({sub_title,date_n_time}) => {
+const Header = ({ sub_title, date_n_time }) => {
   let date = new Date();
 
   return (
     <header className="App-header">
       <section className="main-title">
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo"/>
         <h2 className="title">Task Handler</h2>
       </section>
       <section className="sub-title">
