@@ -1,24 +1,28 @@
 import Header from './components/Header.js';
 import Main from './components/Main.js';
 import Footer from './components/Footer.js';
-import {useState} from 'react';
+import { useState } from 'react';
 import './styles/App.css';
 
 function App() {
-  const [taskManagePanel,setTaskManagePanel] = useState(false);
-  const [currentTskEditInfo,setCurrentTskEditInfo] = useState({});
-  const setTskMngPanel = (param_i,param_ii) => {
-    setCurrentTskEditInfo(param_ii);
-    setTimeout(setTaskManagePanel(param_i),50);
-  }
+  const [currentEdit,setCurrentEdit] = useState([false,{
+      id: '',
+      name: '',
+      details: '',
+      scheduled_for: '',
+      tags: '',
+      completed: '',
+      removed: ''
+    }]);
 
   return (
     <div className="App">
       <Header />
-      <Main taskManage={[taskManagePanel,setTskMngPanel]}/>
+      <Main 
+        cur_edit_alt={[currentEdit,(edit) => setCurrentEdit(edit)]}
+      />
       <Footer 
-        taskManage={[taskManagePanel,setTskMngPanel]} 
-        curEdit={[currentTskEditInfo,setCurrentTskEditInfo]}
+        cur_edit_alt={[currentEdit,(edit) => setCurrentEdit(edit)]}
       />
     </div>
   );
