@@ -7,6 +7,9 @@ $check: #3ead0f;
 $edit: #ff7d0b;
 $remove: #e6443f;
 $white: #FFF;
+$tag_important: #ffa532;
+$tag_urgent: #a522d4;
+$tag_private: #2a5dc9;
 
 * {
   padding: 0%;
@@ -18,13 +21,21 @@ body {
   height: 100%;
   width: 100%;
   background: $background_color;
+
+  input[type="checkbox"] {
+    position: absolute;
+    height: 0%;
+    width: 0%;
+    opacity: 0%;
+    z-index: -1;
+  }
 }
 
 header {
   display: block;
   min-height: 60px;
   max-height: 130px;
-  
+
   section.main-title {
     display: flex;
     align-items: center;
@@ -33,15 +44,15 @@ header {
     padding: 10px 15px;
 
     img {
-      width : 60px;
+      width: 60px;
       height: auto;
     }
 
     h2 {
       color: $white;
       padding: 5px 10px;
-      // font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
       font-family: 'Kalam', cursive;
+      font-size: 28px;
     }
   }
 
@@ -82,10 +93,10 @@ header {
 
 main {
   padding: 10px 15px;
-
-  section.search {
-
-  }
+  min-height: 680px;
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
 
   section.tasks {
     display: flex;
@@ -131,7 +142,10 @@ main {
       }
     }
 
-    .tasks_undone, .tasks_done, .tasks_removed, .tasks_missed {
+    .tasks_undone,
+    .tasks_done,
+    .tasks_removed,
+    .tasks_missed {
       position: relative;
       transition: 350ms ease-out;
       opacity: 0%;
@@ -145,7 +159,7 @@ main {
         border: none;
         border-radius: 5px;
         padding: 15px;
-        margin: 2px 2px 0px 2px; 
+        margin: 2px 2px 0px 2px;
 
         &:hover {
           cursor: pointer;
@@ -218,7 +232,8 @@ main {
 
             abbr {
 
-              i.fa-square-check, i.fa-square {
+              i.fa-square,
+              i.fa-square-check {
                 position: relative;
                 z-index: -1;
                 height: 0%;
@@ -227,34 +242,37 @@ main {
                 transition: 180ms ease-out;
               }
 
-              i.fa-square-check.active, i.fa-square.active {
+              i.fa-square.active {
                 z-index: 1;
                 opacity: 100%;
                 transition: 180ms ease-in;
 
                 &:hover {
-                  cursor: pointer;
                   transition: 180ms ease-in-out;
+                  color: $check;
+                }
+              }
+
+              &:hover {
+                cursor: pointer;
+
+                i.fa-square-check {
+                  z-index: 1;
+                  opacity: 100%;
+                  transition: 180ms ease-in;
                   color: $check;
                 }
               }
             }
           }
 
-          input {
-            position: absolute;
-            height: 0%;
-            width: 0%;
-            opacity: 0%;
-            z-index: -1;
-          }
-
-          .edit, .remove {
+          .edit,
+          .remove {
             height: 22px;
             width: 22px;
             background: none;
             border: none;
-            border-radius: 3px;
+            border-radius: 50%;
             transition: 180ms ease-out;
 
             &:hover {
@@ -263,10 +281,13 @@ main {
               color: $white;
             }
           }
-                    
+
           .edit {
             grid-column: 3/4;
             grid-row: 1/2;
+            height: 30px;
+            width: 30px;
+            margin-left: -2px;
 
             &:hover {
               background: $edit;
@@ -299,11 +320,13 @@ main {
           font-size: 14px;
           opacity: 60%;
         }
-        
-        .task_details, .task_scheduled_for, .tags {
+
+        .task_details,
+        .task_scheduled_for,
+        .tags {
           display: none;
         }
-      
+
         .actions {
           grid-column: 6/9;
           grid-row: 1/2;
@@ -313,11 +336,244 @@ main {
   }
 }
 
+footer {
+  position: relative;
+  height: 60px;
+  width: 100%;
+  padding: 5px 0px;
+  background-color: $secondary_color;
+  transition: 200ms ease-out;
+  z-index: 4;
+
+  section.search {}
+
+  section.task_edit_preview {
+    position: absolute;
+    z-index: -1;
+  }
+
+  section.task_edit_preview.active {
+    z-index: 6;
+    bottom: -50%;
+    height: auto;
+    width: 100%;
+    background: $selection_color;
+    padding: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    filter: drop-shadow(0 -6mm 4mm $accent_color);
+
+    div.bottom_overflow {}
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 10px;
+      width: 100%;
+
+      div.for_title,
+      div.for_details,
+      div.for_schedule,
+      div.task_tags {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 5px 0px;
+        width: 100%;
+
+        label {
+          font-family: 'Lato', sans-serif;
+          font-style: oblique;
+          width: max-content !important;
+        }
+
+        input[type="text"],
+        textarea {
+          font-size: 18px;
+          height: 30px;
+          width: 80%;
+          padding: 5px 10px;
+          border: none;
+          border-radius: 5px;
+          text-align: center;
+        }
+      }
+
+      div.for_details {
+
+        textarea {
+          height: 100px;
+          width: 73%;
+        }
+      }
+
+      div.for_schedule {
+
+        div#task_schedule {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+
+          #task_schedule_date {
+            width: 50px;
+            text-align: center;
+            margin-right: 10px;
+          }
+
+          #task_schedule_time {
+            width: 90px;
+            text-align: center;
+          }
+        }
+      }
+
+      div.task_tags {
+
+        p {
+          font-style: oblique;
+        }
+
+        div.tag_list {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-around;
+          width: 50%;
+
+          label {
+            font-family: 'Lato', sans-serif;
+            font-style: normal;
+            text-decoration: none;
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+            opacity: 60%;
+
+            i {
+              transform: rotate(90deg);
+            }
+
+            &:hover {
+              cursor: pointer;
+            }
+          }
+
+          label.active {
+            opacity: 100%;
+          }
+
+          label:first-child {
+
+            span {
+
+              i {
+                color: $tag_important;
+              }
+            }
+          }
+
+          label:nth-child(2) {
+
+            span {
+
+              i {
+                color: $tag_urgent;
+              }
+            }
+          }
+
+          label:last-child {
+
+            span {
+
+              i {
+                color: $tag_private;
+              }
+            }
+          }
+        }
+      }
+
+      div.actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        width: 90%;
+
+        button {
+          padding: 8px;
+          border-radius: 60px;
+          border: none;
+          margin: 10px;
+          color: $white;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+
+        button[type="submit"] {
+          padding: 15px;
+          background: $secondary_color;
+          font-size: 24px;
+        }
+
+        button[type="reset"] {
+          height: 60px;
+          width: 60px;
+          background: rgba($color: $accent_color, $alpha: 0.5);
+
+          &:hover {
+            background: rgba($color: $accent_color, $alpha: 1.0);
+          }
+        }
+      }
+    }
+  }
+
+  button#add_task {
+    position: absolute;
+    z-index: 3;
+    font-size: 64px;
+    font-weight: 700;
+    padding: 2px;
+    border: 10px solid $background_color;
+    border-radius: 50%;
+    background: $accent_color;
+    color: $white;
+    height: 100px;
+    width: 100px;
+    top: -70%;
+    right: 2.5%;
+    transition: 200ms ease-in;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+footer.focus_out {
+  height: 20px;
+  transition: 200ms ease-in;
+
+  section.search,
+  section.task_edit_view,
+  button#add_task,
+  button#search_task {
+    display: none;
+  }
+}
+
 @keyframes tab_expand {
   from {
     opacity: 10%;
     height: 0px;
-  } to {
+  }
+
+  to {
     opacity: 100%;
     height: auto;
   }
@@ -326,7 +582,23 @@ main {
 @keyframes ninty_deg_rotate {
   from {
     transform: rotate(0);
-  } to {
+  }
+
+  to {
     transform: rotate(180deg);
   }
-} 
+}
+
+@keyframes blob_out {
+  from {
+    z-index: 1;
+    opacity: 100%;
+    transition: 180ms ease-in;
+  }
+
+  to {
+    z-index: -1;
+    opacity: 0%;
+    transition: 180ms ease-out;
+  }
+}
