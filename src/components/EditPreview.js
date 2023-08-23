@@ -33,7 +33,6 @@ const EditPreview = ({ edit, comp_st }) => {
         (((holder.getElementById("task_tag_urgent").isChecked) ? "urg" : 
         ((holder.getElementById("task_tag_private").isChecked) ? "pvt" : false ))));
       
-      
       //////// complete the form submission
     }
   }
