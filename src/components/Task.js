@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const Task = ({ info, sec_state, edit }) => {
-  let { id, name, details, scheduled_for, completed, tags, removed } = info;
+  let { id, name, details, scheduled_for, completed, tag, removed } = info;
 
   const retrieve_scheduled_info = () => {
     if(scheduled_for[0]!=="" && scheduled_for[1]==="") {
@@ -48,18 +48,7 @@ const Task = ({ info, sec_state, edit }) => {
     ));
     let target_obj = sec_state[0].filter(each_tsk => each_tsk.id===target_id)[0];
     
-    if(edit[0][1]===target_obj) {
-      document.querySelector('footer').classList.remove('focus_out');
-      edit[1]([false,{
-        id: '',
-        name: '',
-        details: '',
-        scheduled_for: '',
-        tags: '',
-        completed: '',
-        removed: ''
-      }]);
-    } else {
+    if(edit[0][1]!==target_obj) {
       document.querySelector('footer').classList.add('focus_out');
       edit[1]([true,target_obj]);
     }
@@ -75,11 +64,11 @@ const Task = ({ info, sec_state, edit }) => {
         </p>
       }
       <p className="tags">
-        {tags.map(tg => 
+        {/* {tag.map(tg => 
           <span>
             <i className="fa-solid fa-tag"></i>&nbsp;{tg}
           </span>
-        )}
+        )} */}
       </p>
       <div className="actions">
         {(removed!==true) && <label className="select" htmlFor={`checkbox_${id}`}>
@@ -114,7 +103,7 @@ const GeneralSubTitleComponents = ({ sec, arr_alt, dropdownEffect }) => {
   );
 }
 
-export const TasksUndone = ({ arr, tsk_st, cur_edit}) => {
+export const TasksUndone = ({ arr, tsk_st, cur_edit }) => {
   const [tuexpand,setTUExpand] = useState("down");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
@@ -138,7 +127,7 @@ export const TasksUndone = ({ arr, tsk_st, cur_edit}) => {
   }
 }
 
-export const TasksDone = ({ arr, tsk_st, cur_edit}) => {
+export const TasksDone = ({ arr, tsk_st, cur_edit }) => {
   const [tdexpand,setTDExpand] = useState("up");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
@@ -186,7 +175,7 @@ export const TasksRemoved = ({ arr, tsk_st, cur_edit }) => {
   }
 }
 
-export const TasksMissed = ({ arr, tsk_st, cur_edit}) => {
+export const TasksMissed = ({ arr, tsk_st, cur_edit }) => {
   const [tmexpand,setTMExpand] = useState("up");
   const handleClick = (elm) => {
     elm.currentTarget.classList.toggle("active");
