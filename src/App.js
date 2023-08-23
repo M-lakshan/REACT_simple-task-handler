@@ -5,15 +5,7 @@ import { useState } from 'react';
 import './styles/App.css';
 
 function App() {
-  const [currentEdit,setCurrentEdit] = useState([false,{
-      id: '',
-      name: '',
-      details: '',
-      scheduled_for: '',
-      tags: '',
-      completed: '',
-      removed: ''
-    }]);
+  const [currentEdit,setCurrentEdit] = useState([false,{}]);
 
   return (
     <div className="App">
