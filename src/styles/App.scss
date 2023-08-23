@@ -95,7 +95,6 @@ main {
   padding: 10px 15px;
   min-height: 680px;
   height: 100%;
-  width: 100%;
   overflow-y: scroll;
 
   section.tasks {
@@ -358,7 +357,6 @@ footer {
     height: auto;
     width: 100%;
     background: $selection_color;
-    padding: 5px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     filter: drop-shadow(0 -6mm 4mm $accent_color);
@@ -370,8 +368,7 @@ footer {
       flex-direction: column;
       align-items: flex-start;
       justify-content: center;
-      padding: 10px;
-      width: 100%;
+      padding: 15px;
 
       div.for_title,
       div.for_details,
@@ -417,7 +414,7 @@ footer {
           justify-content: flex-start;
 
           #task_schedule_date {
-            width: 50px;
+            width: 70px;
             text-align: center;
             margin-right: 10px;
           }
@@ -500,7 +497,7 @@ footer {
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
-        width: 90%;
+        width: 100%;
 
         button {
           padding: 8px;
@@ -558,6 +555,7 @@ footer {
 footer.focus_out {
   height: 20px;
   transition: 200ms ease-in;
+  margin-top: 42px;
 
   section.search,
   section.task_edit_view,

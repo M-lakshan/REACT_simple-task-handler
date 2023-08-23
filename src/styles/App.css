@@ -74,7 +74,6 @@ main {
   padding: 10px 15px;
   min-height: 680px;
   height: 100%;
-  width: 100%;
   overflow-y: scroll;
 }
 main section.tasks {
@@ -383,7 +382,6 @@ footer section.task_edit_preview.active {
   height: auto;
   width: 100%;
   background: #F5DDDD;
-  padding: 5px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   filter: drop-shadow(0 -6mm 4mm #6B4E71);
@@ -393,8 +391,7 @@ footer section.task_edit_preview.active form {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding: 10px;
-  width: 100%;
+  padding: 15px;
 }
 footer section.task_edit_preview.active form div.for_title,
 footer section.task_edit_preview.active form div.for_details,
@@ -442,7 +439,7 @@ footer section.task_edit_preview.active form div.for_schedule div#task_schedule 
   justify-content: flex-start;
 }
 footer section.task_edit_preview.active form div.for_schedule div#task_schedule #task_schedule_date {
-  width: 50px;
+  width: 70px;
   text-align: center;
   margin-right: 10px;
 }
@@ -491,7 +488,7 @@ footer section.task_edit_preview.active form div.actions {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  width: 90%;
+  width: 100%;
 }
 footer section.task_edit_preview.active form div.actions button {
   padding: 8px;
@@ -539,6 +536,7 @@ footer button#add_task:hover {
 footer.focus_out {
   height: 20px;
   transition: 200ms ease-in;
+  margin-top: 42px;
 }
 footer.focus_out section.search,
 footer.focus_out section.task_edit_view,
