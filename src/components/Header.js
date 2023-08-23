@@ -1,5 +1,5 @@
 import logo from './../imgs/logo.png';
-import getDateTime from './date_n_time.js';
+import { getDateTime } from './date_n_time.js';
 
 const Header = ({ sub_title, date_n_time }) => {
   let date = new Date();
