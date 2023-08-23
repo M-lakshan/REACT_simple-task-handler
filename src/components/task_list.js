@@ -6,7 +6,7 @@ export const tasks = [
     scheduled_for: ["08/18",""],
     completed: false,
     removed: false,
-    tags: []
+    tag: ''
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ export const tasks = [
     scheduled_for: ["",""],
     completed: true,
     removed: true,
-    tags: []
+    tag: ''
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ export const tasks = [
     scheduled_for: ["",""],
     completed: false,
     removed: true,
-    tags: []
+    tag: ''
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ export const tasks = [
     scheduled_for: ["08/20",""],
     completed: false,
     removed: false,
-    tags: []
+    tag: ''
   },
   {
     id: 5,
@@ -42,7 +42,7 @@ export const tasks = [
     scheduled_for: ["08/20","07:00pm"],
     completed: false,
     removed: false,
-    tags: []
+    tag: ''
   },
   {
     id: 6,
@@ -51,7 +51,7 @@ export const tasks = [
     scheduled_for: ["08/20","10:00pm"],
     completed: false,
     removed: false,
-    tags: []
+    tag: ''
   },
   {
     id: 7,
@@ -60,6 +60,6 @@ export const tasks = [
     scheduled_for: ["",""],
     completed: false,
     removed: true,
-    tags: []
+    tag: ''
   },
 ];
