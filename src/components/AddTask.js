@@ -2,15 +2,7 @@ import React from 'react';
 
 const AddTask = ({ comp_st, edit }) => {
   const handleAddTaskClick = () => {
-    edit[1](false,{
-      id: '',
-      name: '',
-      details: '',
-      scheduled_for: '',
-      tags: '',
-      completed: '',
-      removed: ''
-    });
+    edit[1]([false,{}]);
     comp_st[1](true);
     document.querySelector('footer').classList.add('focus_out');
   }
