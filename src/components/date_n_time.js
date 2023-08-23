@@ -1,4 +1,4 @@
-function getDateTime(type,date) {
+export function getDateTime(type,date) {
 
   const date_post_identifier = (num) => {
     switch(num) {
@@ -75,4 +75,48 @@ function getDateTime(type,date) {
   }
 }
 
-export default getDateTime;
+export const date_validator = (_date) => {
+  let current_date = new Date();
+  let scheduled_date_i = parseInt(_date.substring(0,_date.indexOf('/')));
+  let scheduled_date_ii = parseInt(_date.substring(_date.indexOf('/'),_date.length));
+  
+  if(scheduled_date_ii < current_date.getMonth()+1) {
+    return false;
+  } else {
+    return (scheduled_date_i >= current_date.getDate());
+  }
+}
+
+export const time_validator = (_date,_time) => {
+  let current_time = new Date();
+  let scheduled_time_i = parseInt(_time.substring(0,_time.indexOf('/')));
+  let scheduled_time_ii = parseInt(_time.substring(_time.indexOf('/'),_time.length));
+  
+  if(date_validator(_date)) {
+    if(scheduled_time_i < current_time.getHours()) {
+      return false;
+    } else {
+      if(scheduled_time_ii < current_time.getMinutes()) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  } else {
+    return false;
+  }
+}
+
+export const check_missed_task_sts = (sts) => {
+  if(sts.length<2) {
+    return false;
+  } else {
+    if(date_validator(sts)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+// export default getDateTime;
