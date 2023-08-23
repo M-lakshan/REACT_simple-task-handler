@@ -1,22 +1,7 @@
 import React from 'react';
 import { tasks } from './task_list.js';
 import { TasksUndone, TasksDone, TasksRemoved, TasksMissed } from './Task.js';
-
-const check_missed_task_sts = (sts) => {
-  if(sts.length<2) {
-    return false;
-  } else {
-    let current_date = new Date();
-    let scheduled_date_i = parseInt(sts.substring(0,sts.indexOf('/')));
-    let scheduled_date_ii = parseInt(sts.substring(sts.indexOf('/'),sts.length));
-
-    if((current_date.getDate() > scheduled_date_i) && ((current_date.getMonth()+1) > scheduled_date_ii)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-}
+import { check_missed_task_sts } from './date_n_time.js';
 
 export const TasksHandle = (props) => {
   const appStateObj = props.appState;
