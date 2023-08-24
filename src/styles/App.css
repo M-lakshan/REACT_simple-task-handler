@@ -386,6 +386,22 @@ footer section.task_edit_preview.active {
   border-top-right-radius: 5px;
   filter: drop-shadow(0 -6mm 4mm #6B4E71);
 }
+footer section.task_edit_preview.active div.error_pop_up {
+  transition: 300ms ease-out;
+}
+footer section.task_edit_preview.active div.error_pop_up.active {
+  height: auto;
+  width: 100%;
+  transition: 300ms ease-in;
+}
+footer section.task_edit_preview.active div.error_pop_up.active p.error {
+  width: 100%;
+  text-align: center;
+  padding: 10px 5px 0px 5px;
+  color: #e6443f;
+  font-weight: 600;
+  transition: 100ms ease-in;
+}
 footer section.task_edit_preview.active form {
   display: flex;
   flex-direction: column;

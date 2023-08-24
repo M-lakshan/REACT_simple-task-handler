@@ -361,7 +361,24 @@ footer {
     border-top-right-radius: 5px;
     filter: drop-shadow(0 -6mm 4mm $accent_color);
 
-    div.bottom_overflow {}
+    div.error_pop_up {
+      transition: 300ms ease-out;
+    }
+      
+    div.error_pop_up.active {
+      height: auto;
+      width: 100%;
+      transition: 300ms ease-in;
+
+      p.error {
+        width: 100%;
+        text-align: center;
+        padding: 10px 5px 0px 5px;
+        color: $remove;
+        font-weight: 600;
+        transition: 100ms ease-in;
+      }
+    }
 
     form {
       display: flex;
