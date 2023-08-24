@@ -10,9 +10,12 @@ const EditPreview = ({ edit, comp_st }) => {
   const { id, name, details, scheduled_for, tag, completed, removed } = edit[0][1];
 
   const setCurrentErrorValue= (val) => {
-    console.log(val)
+    document.querySelector(".error_pop_up").classList.add('active');
     setCurrentError(val);
-    setTimeout(setCurrentError(''),2000);
+    setTimeout(() => {
+      document.querySelector(".error_pop_up").classList.remove('active');
+      setCurrentError('');
+    },3000);
   }
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,185 +39,140 @@ const EditPreview = ({ edit, comp_st }) => {
       //////// complete the form submission
     }
   }
+  const number_only_validation = (edit,type) => {
+    let passing_val = edit.target.value[(edit.target.value.length)-1];
+
+    if((/[0-9]/).test(parseInt(edit.target.value[edit.target.value.length-1]))) {
+      if(type==="date") {
+        date_validation(passing_val);
+      } else {
+
+        if(document.getElementById("task_schedule_time").value.length<6) {
+          time_validation(passing_val);
+        } else {
+          document.getElementById("task_schedule_time").value = document.getElementById("task_schedule_time")
+            .value.substring(0,5);
+        }
+      }
+    } else {
+      if(type==="date") {
+        let elm_val = document.getElementById("task_schedule_date").value; 
+        document.getElementById("task_schedule_date").value = elm_val.substring((elm_val.length-3),(elm_val.length-1));
+      } else {
+        let elm_val = document.getElementById("task_schedule_time").value;
+        
+        if(document.getElementById("task_schedule_time").value.length>=5) {
+          document.getElementById("task_schedule_time").value = elm_val.substring(0,5) + 
+            ((passing_val==='a' || passing_val==='p') ? passing_val+'m' : '');
+          
+          setTimeout(() => {
+            if(document.getElementById("task_schedule_date").value==='') {
+              setCurrentErrorValue("enter a date value");
+            } else {
+              if(time_validator(
+                  document.getElementById("task_schedule_date").value,
+                  document.getElementById("task_schedule_time").value
+                )!==true) {
+                document.getElementById("task_schedule_time").value = '';
+                setCurrentErrorValue("enter a valid time");
+              }
+            }},
+          1000);
+        } else {
+          document.getElementById("task_schedule_time").value = elm_val.substring((elm_val.length-3),(elm_val.length-1));
+        }
+      }
+    }
+  }
   const make_i_ii_digits = (id,type,fst_sec,comp,digit) => {
-    if(!(/[0-9]/).test(digit)) {
+    if(!(/[0-9]/).test(parseInt(digit))) {
       document.getElementById(id).value = '';
     } else {
-      document.getElementById(id).value = (digit<=comp) ? digit : 
-        '0'+digit+((fst_sec==="fst") ? ((type==="time") ? ':' : '/') : '');
+      if(fst_sec==="fst") {
+        document.getElementById(id).value = (digit<=comp) ? digit : '0'+digit+((type==="time") ? ':' : '/');
+      } else {
+        document.getElementById(id).value = document.getElementById(id).value.substring(0,2) + 
+          ((type==="time") ? ':' : '/') +
+          ((digit<=comp) ? digit : '0'+digit);
+      }
     }
     return true;
   }
   const date_validation = (val) => {
-    let date_val = (val[1]==="initial") ? val[0].target.value : val[0];
+    let main_input = document.getElementById("task_schedule_date").value;
+    let date_val = val;
+    let state = false;
 
-    switch(date_val.length) {
-      case 1: {
-        return (typeof(parseInt(date_val[0])==='number')) ? make_i_ii_digits("task_schedule_date","date","fst",3,parseInt(date_val[0])) : false;
-      }
+    switch(main_input.length) {
+      case 1:
+        state = make_i_ii_digits("task_schedule_date","date","fst",3,date_val);
+        break;
       case 2: {
-        let state = false;
-
-        if(typeof(parseInt(date_val.substring(0,2)))==='number') {
-
-          if((parseInt(date_val[0])===3)) {
-
-            if((parseInt(date_val[1])<=1)) {
-              document.getElementById("task_schedule_date").value = date_val+'/';
-            } else {
-              state = false;
-            }
-          } else {
-            document.getElementById("task_schedule_date").value = date_val+'/';
-          }
-          state = true;
-        }
-        return state;
+        document.getElementById("task_schedule_date").value = main_input+'/';
+        state = true;
+        break;
       }
       case 4: {
-        let state = false;
-
-        if(date_validation([date_val.substring(0,2),"sec"]) && (typeof(parseInt(date_val[3]))=='number')) {
-            
-          if(parseInt(date_val[3])<=1) {
-            document.getElementById("task_schedule_date").value = date_val;
-          } else {
-            document.getElementById("task_schedule_date").value = date_val.substring(0,3)+'0'+date_val[3];
-          }
-          state = true;
-        } else {
-          document.getElementById("task_schedule_date").value = date_val.substring(0,3);
-        }
-        return state;
+        state = make_i_ii_digits("task_schedule_date","date","sec",1,date_val);
+        state = true;
+        break;
       }
       case 5: {
-        let state = false;
+        document.getElementById("task_schedule_date").value = main_input.substring(0,5);
 
-        if(date_validation([date_val.substring(0,2),"sec"]) &&
-          date_validation([date_val.substring(3,5),"sec"])) {
-          document.getElementById("task_schedule_date").value = date_val.substring(0,5);
-
-          if(date_validator(date_val)!==true) {
-            document.getElementById("task_schedule_date").value = '';
-            setCurrentErrorValue("enter a valid date");
-          } else {
-            state = true;
-          }
+        if(date_validator(main_input)!==true) {
+          state = false;
+          document.getElementById("task_schedule_date").value = '';
+          setCurrentErrorValue("enter a valid date");
+        } else {
+          state = true;
         }
-        return state;
+        break;
       }
       default: {
-        document.getElementById("task_schedule_date").value = date_val.substring(0,5);
+        document.getElementById("task_schedule_date").value = main_input.substring(0,5);
         document.getElementById("task_schedule_time").focus();
       }
     }
+      
+    return state;
   }
   const time_validation = (val) => {
-    let time_val = (val[1]==="initial") ? val[0][1].target.value : val[0][1];
-    let date_val = val[0][0];
+    let main_input = document.getElementById("task_schedule_time").value;
+    let time_val = val;
+    let state = false;
 
-    switch(time_val.length) {
-      case 1: {
-        return (typeof(parseInt(time_val[0])==='number')) ? make_i_ii_digits("task_schedule_time","time","fst",1,parseInt(time_val[0])) : false;
-      }
+    switch(main_input.length) {
+      case 1:
+        state = make_i_ii_digits("task_schedule_time","time","fst",1,time_val);
+        break;
       case 2: {
-        let state = false;
-
-        if(typeof(parseInt(time_val.substring(0,2)))==='number') {
-
-          if((parseInt(time_val[0])===1)) {
-
-            if((parseInt(time_val[1])<=2)) {
-              document.getElementById("task_schedule_time").value = time_val+':';
-            } else {
-              state = false;
-            }
-          } else {
-            document.getElementById("task_schedule_time").value = time_val+':';
-          }
-          state = true;
-        }
-        return state;
+        document.getElementById("task_schedule_time").value = main_input+':';
+        state = true;
+        break;
       }
       case 4: {
-        let state = false;
-
-        if(time_validation([[date_val,time_val.substring(0,2)],"sec"]) && (typeof(parseInt(time_val[3]))==='number')) {
-            
-          if(parseInt(time_val[3])<=5) {
-            document.getElementById("task_schedule_time").value = time_val;
-          } else {
-            document.getElementById("task_schedule_time").value = time_val.substring(0,3)+'0'+time_val[3];
-          }
-          state = true;
-        } else {
-          document.getElementById("task_schedule_time").value = time_val.substring(0,2);
-        }
-        return state;
+        state = make_i_ii_digits("task_schedule_time","time","sec",5,time_val);
+        state = true;
+        break;
       }
       case 5: {
-        let state = false;
-
-        if(time_validation([[date_val,time_val.substring(0,2)],"sec"]) &&
-          time_validation([[date_val,time_val.substring(3,5)],"sec"])) {
-          document.getElementById("task_schedule_time").value = time_val.substring(0,5);
-          state = true;
-        }
-        return state;
+        document.getElementById("task_schedule_time").value = main_input.substring(0,7);
+        state = true;
+        break;
       }
       default: {
-        let state = false;
-        let cur_date = new Date();
-        let validation = getDateTime("time",cur_date);
-        let time_val_i = time_val.substring(0,2);
-        let time_val_ii = time_val.substring(3,5);
-        let validation_index = validation.indexOf(':')+1;
-
-        if(time_val[5]==='a') {
-          document.getElementById("task_schedule_time").value = time_val.substring(0,5)+"am";
-        } else if(time_val[5]==='p') {
-          document.getElementById("task_schedule_time").value = time_val.substring(0,5)+"pm";
+        if(time_val!=='a' || time_val!=='p') {
+          document.getElementById("task_schedule_time").value = main_input.substring(0,6);
+        } else {
+          document.getElementById("task_schedule_time").value = main_input.substring(0,5);
         }
-
-        time_val = document.getElementById("task_schedule_time").value;
-
-        const time_validation = (last,last_plus_ii) => {
-          let st = false;
-          let date_check = parseInt(cur_date.getDate())<=parseInt(date_val.substring(0,2));
-          let month_check = parseInt(cur_date.getMonth()+1)<=parseInt(date_val.substring(3,5));
-          let hours_check = parseInt(validation.substring(0,2))<=parseInt(time_val_i);
-          let am_pm_check = validation.substring(validation.length-2,validation.length)===time_val.substring(last+1,last_plus_ii);
-          let minutes_check = parseInt(validation.substring(validation_index,validation_index+2))>parseInt(time_val_ii);
-        
-          // console.log(validation,validation_index)
-          // console.log('dt_chk : '+date_check,parseInt(cur_date.getDate()),parseInt(date_val.substring(0,2)));
-          // console.log('mn_chk : '+month_check,parseInt(cur_date.getMonth()+1),parseInt(date_val.substring(3,5)))
-          // console.log('hr_chk : '+hours_check,parseInt(validation.substring(0,2)),parseInt(time_val_i))
-          // console.log('ap_chk : '+am_pm_check,validation.substring(validation.length-2,validation.length),time_val.substring(last+1,last_plus_ii))
-          // console.log('mn_chk : '+minutes_check,parseInt(validation.substring(validation_index,validation_index+2)),parseInt(time_val_ii))
-
-          if(date_check && month_check) {
-            if(hours_check && minutes_check) {
-              st = (am_pm_check) ? true : false;
-            } else {
-              st = (am_pm_check) ? true : false;
-              // st = true;
-            }
-          }
-          return st;
-        }
-
-        state = time_validation(4,7);
-        console.log(state);
-
-        if(state===false) {
-          document.getElementById("task_schedule_time").value = '';
-          // setCurrentErrorValue("enter a valid time");
-          state = true;
-        }
-        return state;
+        state = true;
+        break;
       }
     }
+
+    return state;
   }
   const cancelTsk = () => {
     document.querySelector('footer').classList.remove('focus_out');
@@ -277,11 +235,9 @@ const EditPreview = ({ edit, comp_st }) => {
         <div className="for_schedule">
           <label htmlFor="task_schedule">Scheduled for : </label>&nbsp;&nbsp;&nbsp;
           <div id="task_schedule">
-            <input type="text" id="task_schedule_date" onChange={(e) => date_validation([e,"initial"])}
+            <input type="text" id="task_schedule_date" onChange={(e) => number_only_validation(e,"date")}
               defaultValue={(scheduled_for) && scheduled_for[0]} placeholder="DD/MM"/>
-            <input type="text" id="task_schedule_time" onChange={(e) => time_validation([
-              [(document.getElementById("task_schedule_date").value),e],"initial"
-            ])}
+            <input type="text" id="task_schedule_time" onChange={(e) => number_only_validation(e,"time")}
               defaultValue={(scheduled_for) && scheduled_for[1]} placeholder="00:00am"/>
           </div>
         </div>
