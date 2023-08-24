@@ -78,29 +78,31 @@ export function getDateTime(type,date) {
 export const date_validator = (_date) => {
   let current_date = new Date();
   let scheduled_date_i = parseInt(_date.substring(0,_date.indexOf('/')));
-  let scheduled_date_ii = parseInt(_date.substring(_date.indexOf('/'),_date.length));
-  
-  if(scheduled_date_ii < current_date.getMonth()+1) {
-    return false;
-  } else {
+  let scheduled_date_ii = parseInt(_date.substring(_date.indexOf('/')+1,_date.length));
+
+  if(scheduled_date_ii <= current_date.getMonth()+1) {
     return (scheduled_date_i >= current_date.getDate());
+  } else {
+    return false;
   }
 }
 
 export const time_validator = (_date,_time) => {
   let current_time = new Date();
-  let scheduled_time_i = parseInt(_time.substring(0,_time.indexOf('/')));
-  let scheduled_time_ii = parseInt(_time.substring(_time.indexOf('/'),_time.length));
-  
+  let current_time_AmPm = (current_time.getHours() > 12) ? "pm" : "am";
+  let scheduled_time_AmPm = (_time.substring(_time.indexOf(':')+3,(_time.indexOf(':')+6)));
+  let scheduled_time_i = parseInt(_time.substring(0,_time.indexOf(':')));
+  let scheduled_time_ii = parseInt(_time.substring(_time.indexOf(':')+1,(_time.indexOf(':')+3)));
+
   if(date_validator(_date)) {
-    if(scheduled_time_i < current_time.getHours()) {
-      return false;
-    } else {
-      if(scheduled_time_ii < current_time.getMinutes()) {
-        return false;
-      } else {
+    if(scheduled_time_i <= parseInt(current_time.getHours())) {
+      if(scheduled_time_ii > parseInt(current_time.getMinutes())) {
         return true;
+      } else {
+        return (scheduled_time_AmPm !== current_time_AmPm);
       }
+    } else {
+      return (scheduled_time_AmPm !== current_time_AmPm);
     }
   } else {
     return false;
@@ -108,15 +110,7 @@ export const time_validator = (_date,_time) => {
 }
 
 export const check_missed_task_sts = (sts) => {
-  if(sts.length<2) {
-    return false;
-  } else {
-    if(date_validator(sts)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  return (!(sts.length<2)) ? true : (date_validator(sts));
 }
 
 // export default getDateTime;
