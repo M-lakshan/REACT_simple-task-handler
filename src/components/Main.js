@@ -13,9 +13,8 @@ const Main = ({ cur_edit_alt, cur_tasks_list }) => {
   const derivate_tasks = (arr) => {
       
     arr.forEach(tsk => {
-
       if(tsk.completed!==true) {
-        if(!check_missed_task_sts(tsk.scheduled_for[0])) {
+        if(check_missed_task_sts(tsk.scheduled_for[0]) && tsk.scheduled_for[0]!=="") {
           tasks_missed.push(tsk);
         } else {
           if(tsk.removed) {
