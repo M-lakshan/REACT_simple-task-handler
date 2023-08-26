@@ -80,8 +80,22 @@ export const date_validator = (_date) => {
   let scheduled_date_i = parseInt(_date.substring(0,_date.indexOf('/')));
   let scheduled_date_ii = parseInt(_date.substring(_date.indexOf('/')+1,_date.length));
 
-  if(scheduled_date_ii <= current_date.getMonth()+1) {
-    return (scheduled_date_i >= current_date.getDate());
+    console.log(scheduled_date_ii >= current_date.getMonth()+1) 
+    console.log (scheduled_date_i >= current_date.getDate())
+ console.log (
+        (!(scheduled_date_i >= current_date.getDate())) && 
+        (scheduled_date_ii >= current_date.getMonth()+1)
+      );
+
+  if(scheduled_date_ii >= current_date.getMonth()+1) {
+    if(scheduled_date_i >= current_date.getDate()) {
+      return true;
+    } else {
+      return (
+        (!(scheduled_date_i >= current_date.getDate())) && 
+        (scheduled_date_ii >= current_date.getMonth()+1)
+      );
+    }
   } else {
     return false;
   }
@@ -109,8 +123,12 @@ export const time_validator = (_date,_time) => {
   }
 }
 
-export const check_missed_task_sts = (sts) => {
-  return (!(sts.length<2)) ? true : (date_validator(sts));
+export const check_missed_task_sts = (pd) => {
+  if(pd.length>3) {
+    console.log(date_validator(pd),pd)
+    return ((date_validator(pd)) ? false : true);
+  } else {
+    console.log("empty")
+    return true;
+  }
 }
-
-// export default getDateTime;
