@@ -3,7 +3,7 @@ import EditPreview from './EditPreview.js';
 import AddTask from './AddTask.js';
 import { useState } from 'react';
 
-const Footer = ({cur_edit_alt}) => {
+const Footer = ({ cur_edit_alt, cur_tasks_list }) => {
   const [editPreview,setEditPreveiw] = useState(false);
   const [searchPreview,setSearchPreveiw] = useState(false);
 
@@ -13,6 +13,7 @@ const Footer = ({cur_edit_alt}) => {
         {(editPreview || cur_edit_alt[0][0]) && <EditPreview 
           comp_st={[editPreview,(e) => setEditPreveiw(e)]}
           edit={cur_edit_alt}
+          user_tasks={cur_tasks_list}
         />}
       </section>
       <section className="main_actions">
