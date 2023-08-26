@@ -4,10 +4,10 @@ import { date_validator, time_validator } from './date_n_time.js';
  
 const EditPreview = ({ edit, comp_st, user_tasks }) => {
   const [current_error,setCurrentError] = useState('');
-  const [tag_imp,setTagImp] = useState(false);
-  const [tag_urg,setTagUrg] = useState(false);
-  const [tag_pvt,setTagPvt] = useState(false);
   const { id, name, details, scheduled_for, tag, completed, removed } = edit[0][1];
+  const [tag_imp,setTagImp] = useState((tag==="imp") ? true : false);
+  const [tag_urg,setTagUrg] = useState((tag==="urg") ? true : false);
+  const [tag_pvt,setTagPvt] = useState((tag==="pvt") ? true : false);
 
   const setCurrentErrorValue = (val) => {
     document.querySelector(".error_pop_up").classList.add('active');
@@ -233,7 +233,7 @@ const EditPreview = ({ edit, comp_st, user_tasks }) => {
         break;
     }
   }
-
+  
   return (
     <React.Fragment>
       <div className={(current_error==='') ? "error_pop_up" : "error_pop_up active"}>
@@ -267,7 +267,7 @@ const EditPreview = ({ edit, comp_st, user_tasks }) => {
           <p>Tags : </p>&nbsp;&nbsp;&nbsp;
           <div className="tag_list">
             <label htmlFor="task_tag_important" 
-              className={((tag && tag.includes('tag_imp')) || ((tag_imp!==false))) ? "active" : undefined}
+              className={((tag!==false) || ((tag_imp!==false))) ? "active" : undefined}
               onClick={() => handleTagClick('imp')}>
               {(tag_imp===true) && <span>
                 <i className="fa-solid fa-tag"></i>&nbsp;
@@ -275,7 +275,7 @@ const EditPreview = ({ edit, comp_st, user_tasks }) => {
               important
             </label>&nbsp;
             <label htmlFor="task_tag_urgent" 
-              className={((tag && tag.includes('tag_urg')) || ((tag_urg!==false))) ? "active" : undefined}
+              className={((tag!==false) || ((tag_urg!==false))) ? "active" : undefined}
               onClick={() => handleTagClick('urg')}>
               {(tag_urg===true) && <span>
                 <i className="fa-solid fa-tag"></i>&nbsp;
@@ -283,7 +283,7 @@ const EditPreview = ({ edit, comp_st, user_tasks }) => {
               urgent
             </label>&nbsp;
             <label htmlFor="task_tag_private" 
-              className={((tag && tag.includes('tag_pvt')) || ((tag_pvt!==false))) ? "active" : undefined}
+              className={((tag!==false) || ((tag_pvt!==false))) ? "active" : undefined}
               onClick={() => handleTagClick('pvt')}>
               {(tag_pvt===true) && <span>
                 <i className="fa-solid fa-tag"></i>&nbsp;
