@@ -18,7 +18,14 @@ const Task = ({ info, sec_state, edit }) => {
     let updating_arr = sec_state[0].filter(each_tsk => each_tsk.id!==target);
     let updating_elm = sec_state[0].filter(each_tsk => each_tsk.id===target)[0];
     
-    (sts==="remove") ? updating_elm.removed = true : updating_elm.completed = true;
+    if(sts==="remove") {
+      updating_elm.removed = true;
+      updating_elm.completed = false;
+    } else {
+      updating_elm.completed = true;
+      updating_elm.removed = false;
+    }
+    
     updating_arr.push(updating_elm);
 
     sec_state[1](updating_arr);
@@ -53,10 +60,12 @@ const Task = ({ info, sec_state, edit }) => {
       edit[1]([true,target_obj]);
     }
   }
-
   return (
     <div className={`task_${id} task`}>
-      <h5>{(completed || removed) ? <s>{name}</s> : name}</h5>
+      <h5>
+        {(completed || removed) ? <s>{name}</s> : name}&nbsp;
+        <i className={`fa-solid fa-tag ${(tag!==false) && tag}`}></i>
+      </h5>
       {(details.length>3 && completed!==true && removed!==true) && <p className="task_details">{details}</p>}
       {(details.length>3 && completed!==true && removed!==true && typeof(retrieve_scheduled_info())!=='boolean') && 
         <p className="task_scheduled_for">
@@ -64,11 +73,6 @@ const Task = ({ info, sec_state, edit }) => {
         </p>
       }
       <p className="tags">
-        {/* {tag.map(tg => 
-          <span>
-            <i className="fa-solid fa-tag"></i>&nbsp;{tg}
-          </span>
-        )} */}
       </p>
       <div className="actions">
         {(removed!==true) && <label className="select" htmlFor={`checkbox_${id}`}>
