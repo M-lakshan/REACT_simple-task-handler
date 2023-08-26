@@ -398,6 +398,7 @@ footer {
   background-color: #53687E;
   transition: 200ms ease-out;
   z-index: 4;
+  margin-top: 40px;
 }
 footer section.task_edit_preview {
   position: absolute;
