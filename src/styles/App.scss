@@ -189,6 +189,22 @@ main {
           grid-column: 1/5;
           grid-row: 1/2;
           font-size: 14px;
+
+          i.imp {
+            color: $tag_important;
+          }
+
+          i.urg {
+            color: $tag_urgent;
+          }
+
+          i.pvt {
+            color: $tag_private;
+          }
+
+          i.false {
+            color: #656464;
+          }
         }
 
         .task_details {
@@ -329,6 +345,19 @@ main {
         .actions {
           grid-column: 6/9;
           grid-row: 1/2;
+        }
+      }
+    }
+
+    .tasks_missed.expand {
+
+      .task {
+
+        .actions {
+          
+          .select, .remove {
+            display: none;
+          }
         }
       }
     }

@@ -176,6 +176,30 @@ main section.tasks .tasks_missed.expand .task h5 {
   grid-row: 1/2;
   font-size: 14px;
 }
+main section.tasks .tasks_undone.expand .task h5 i.imp,
+main section.tasks .tasks_done.expand .task h5 i.imp,
+main section.tasks .tasks_removed.expand .task h5 i.imp,
+main section.tasks .tasks_missed.expand .task h5 i.imp {
+  color: #ffa532;
+}
+main section.tasks .tasks_undone.expand .task h5 i.urg,
+main section.tasks .tasks_done.expand .task h5 i.urg,
+main section.tasks .tasks_removed.expand .task h5 i.urg,
+main section.tasks .tasks_missed.expand .task h5 i.urg {
+  color: #a522d4;
+}
+main section.tasks .tasks_undone.expand .task h5 i.pvt,
+main section.tasks .tasks_done.expand .task h5 i.pvt,
+main section.tasks .tasks_removed.expand .task h5 i.pvt,
+main section.tasks .tasks_missed.expand .task h5 i.pvt {
+  color: #2a5dc9;
+}
+main section.tasks .tasks_undone.expand .task h5 i.false,
+main section.tasks .tasks_done.expand .task h5 i.false,
+main section.tasks .tasks_removed.expand .task h5 i.false,
+main section.tasks .tasks_missed.expand .task h5 i.false {
+  color: #656464;
+}
 main section.tasks .tasks_undone.expand .task .task_details,
 main section.tasks .tasks_done.expand .task .task_details,
 main section.tasks .tasks_removed.expand .task .task_details,
@@ -361,6 +385,9 @@ main section.tasks .tasks_removed.expand .task .actions,
 main section.tasks .tasks_missed.expand .task .actions {
   grid-column: 6/9;
   grid-row: 1/2;
+}
+main section.tasks .tasks_missed.expand .task .actions .select, main section.tasks .tasks_missed.expand .task .actions .remove {
+  display: none;
 }
 
 footer {
