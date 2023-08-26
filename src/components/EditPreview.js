@@ -1,15 +1,15 @@
 /* eslint-disable default-case */
 import React, { useState } from 'react';
-import { date_validator, time_validator, getDateTime } from './date_n_time.js';
+import { date_validator, time_validator } from './date_n_time.js';
  
-const EditPreview = ({ edit, comp_st }) => {
+const EditPreview = ({ edit, comp_st, user_tasks }) => {
   const [current_error,setCurrentError] = useState('');
   const [tag_imp,setTagImp] = useState(false);
   const [tag_urg,setTagUrg] = useState(false);
   const [tag_pvt,setTagPvt] = useState(false);
   const { id, name, details, scheduled_for, tag, completed, removed } = edit[0][1];
 
-  const setCurrentErrorValue= (val) => {
+  const setCurrentErrorValue = (val) => {
     document.querySelector(".error_pop_up").classList.add('active');
     setCurrentError(val);
     setTimeout(() => {
@@ -17,26 +17,56 @@ const EditPreview = ({ edit, comp_st }) => {
       setCurrentError('');
     },3000);
   }
+  const generate_task_id = () => (user_tasks[0].map(tsk => tsk.id)).sort((a,b) => b-a)[0] + 1;
   const handleSubmit = (e) => {
+    const holder = e.target.form;
     e.preventDefault();
     
-    const holder = e.target.form;
-
-    if(holder.getElementById("task_title").value.length<5) {
+    if(holder.task_title.value.length<5) {
       setCurrentErrorValue("task title must contain at least 5 charactors!");
     } else {
-      let task_id = parseInt(holder.getElementById("task_id").value);
-      let task_cmp = holder.getElementById("task_ste_complete").value;
-      let task_rmv = holder.getElementById("task_ste_remove").value;
-      let task_title = holder.getElementById("task_title").value;
-      let task_details = holder.getElementById("task_details").value;
-      let task_schedule_date = holder.getElementById("task_schedule_date").value;
-      let task_schedule_time = holder.getElementById("task_schedule_time").value;
-      let task_tag = ((holder.getElementById("task_tag_important").isChecked) ? "imp" : 
-        (((holder.getElementById("task_tag_urgent").isChecked) ? "urg" : 
-        ((holder.getElementById("task_tag_private").isChecked) ? "pvt" : false ))));
+      let task_id = holder.task_id.value;
+      // let task_cmp = holder.task_ste_complete.value;
+      // let task_rmv = holder.task_ste_remove.value;
+      let task_title = holder.task_title.value;
+      let task_details = holder.task_details.value;
+      let task_schedule_date = holder.task_schedule_date.value;
+      let task_schedule_time = holder.task_schedule_time.value;
+      let task_tag = ((holder.task_tag_important.checked) ? "imp" : 
+        (((holder.task_tag_urgent.checked) ? "urg" : 
+        ((holder.task_tag_private.checked) ? "pvt" : false ))));
+      let updating_task_arr = user_tasks[0];
+        
+      if(!(/[0-9]/).test(task_id)) {
+        task_id = generate_task_id();
+      } else {
+        updating_task_arr = user_tasks[0].filter(tsk => tsk.id!==parseInt(task_id));
+      }
+
+      const update_tasks = (_date=task_schedule_date,_time=task_schedule_time) => {
+        updating_task_arr.push({
+          id: parseInt(task_id),
+          name: task_title,
+          details: task_details,
+          scheduled_for: [_date,_time],
+          completed: false,
+          removed: false,
+          tag: (!task_tag) ? "pvt" : task_tag
+        });
       
-      //////// complete the form submission
+        user_tasks[1](updating_task_arr);
+      }
+        
+      if(task_schedule_date.length>3) {
+        if(date_validation(task_schedule_date)) {
+          update_tasks();
+        } else {
+          setCurrentErrorValue("enter a valid date");
+        }
+      }
+
+      setTimeout(() => update_tasks("",""),300);
+      setTimeout(() => cancelTsk(),500);
     }
   }
   const number_only_validation = (edit,type) => {
@@ -176,15 +206,7 @@ const EditPreview = ({ edit, comp_st }) => {
   }
   const cancelTsk = () => {
     document.querySelector('footer').classList.remove('focus_out');
-    edit[1](false,{
-      id: '',
-      name: '',
-      details: '',
-      scheduled_for: '',
-      tags: '',
-      completed: '',
-      removed: ''
-    });
+    edit[1](false,{});
     comp_st[1](false);
   }
   const handleTagClick = (type) => {
