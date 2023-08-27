@@ -189,7 +189,8 @@ main {
       transition: 350ms ease-in;
       animation: 1.2s ease 0s 1 running tab_expand;
       opacity: 100%;
-      height: 548px;
+      height: auto;
+      max-height: 548px;
       z-index: 1;
       overflow-y: scroll;
 
