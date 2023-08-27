@@ -1,6 +1,6 @@
+import SubTitleClock from './SubTitleClock';
 import logo from './../imgs/logo.png';
 import { getDateTime } from './date_n_time.js';
-import { useEffect } from 'react';
 
 const Header = ({sub_title}) => {
   let date = new Date();
@@ -28,10 +28,7 @@ const Header = ({sub_title}) => {
             <sup>{getDateTime("date",date)[1]}</sup>&nbsp;
             {getDateTime("date",date)[2]}
           </p>
-          <p className="time">{getDateTime("time",date)}</p>
-          {/* <p className="time">{
-            useEffect(setInterval(getDateTime("time",date),2000),[])
-          }</p>  */}
+          <SubTitleClock date_val={date} func={(e) => getDateTime("time",e)} />
         </div>
       </section>
     </header>
