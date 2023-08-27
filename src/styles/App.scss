@@ -3,6 +3,7 @@ $secondary_color: #53687E;
 $accent_color: #6B4E71;
 $background_color: #C2B2B4;
 $selection_color: #F5DDDD;
+$selection_color_alt: #f9d6c8;
 $check: #3ead0f;
 $edit: #ff7d0b;
 $remove: #e6443f;
@@ -17,9 +18,19 @@ $tag_private: #2a5dc9;
 }
 
 body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+  width: 100%;
+  background: $selection_color_alt;
+  overflow: hidden;
+}
+
+.App {
   display: block;
   height: 100%;
-  width: 100%;
+  width: 540px;
   background: $background_color;
 
   input[type="checkbox"] {
@@ -92,17 +103,19 @@ header {
 }
 
 main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   padding: 10px 15px;
-  min-height: 680px;
+  min-height: 640px;
   height: 100%;
-  overflow-y: scroll;
 
   section.tasks {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    min-width: 300px;
+    min-width: 500px;
     max-width: 480px;
     padding-top: 0px;
     padding-bottom: 5px;
@@ -159,9 +172,12 @@ main {
         border-radius: 5px;
         padding: 15px;
         margin: 2px 2px 0px 2px;
+        transition: 280ms ease-out;
 
         &:hover {
           cursor: pointer;
+          background: $selection_color_alt;
+          transition: 280ms ease-in;
         }
       }
     }
@@ -173,8 +189,9 @@ main {
       transition: 350ms ease-in;
       animation: 1.2s ease 0s 1 running tab_expand;
       opacity: 100%;
-      height: auto;
+      max-height: 548px;
       z-index: 1;
+      overflow-y: scroll;
 
       .task {
         display: grid;
