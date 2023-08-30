@@ -10,12 +10,12 @@ export const tasks = [
   },
   {
     id: 2,
-    name: "take the trash out",
-    details: "",
-    scheduled_for: ["",""],
+    name: "be home by 11.00pm",
+    details: "...hv to sleep ealry in order to attend head-office tommorrow",
+    scheduled_for: ["20/11","10:00pm"],
     completed: false,
     removed: false,
-    tag: false
+    tag: "imp"
   },
   {
     id: 3,
@@ -46,12 +46,12 @@ export const tasks = [
   },
   {
     id: 6,
-    name: "be home by 11.00pm",
-    details: "...hv to sleep ealry in order to attend head-office tommorrow",
-    scheduled_for: ["20/11","10:00pm"],
+    name: "take the trash out",
+    details: "",
+    scheduled_for: ["",""],
     completed: false,
     removed: false,
-    tag: "imp"
+    tag: false
   },
   {
     id: 7,
