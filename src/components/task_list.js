@@ -29,7 +29,7 @@ export const tasks = [
   {
     id: 4,
     name: "practice more in programming",
-    details: "follow REACT programming trends, common patters for applications",
+    details: "follow REACT programming trends, common patterns for applications",
     scheduled_for: ["20/12",""],
     completed: false,
     removed: false,
